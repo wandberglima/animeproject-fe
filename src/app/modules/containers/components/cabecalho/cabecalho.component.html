@@ -1,0 +1,15 @@
+<div class="card">
+  <p-menubar [model]="items" class="navbar navbar-dark bg-dark">
+    <ng-template pTemplate="start">
+      <img
+        src="https://primefaces.org/cdn/primeng/images/primeng.svg"
+        height="40"
+        class="mr-2"
+        style="margin-left: 10px; margin-right: 10px;"
+      />
+    </ng-template>
+    <ng-template pTemplate="end">
+      <input type="text" pInputText placeholder="Search" class="w-full" />
+    </ng-template>
+  </p-menubar>
+</div>
