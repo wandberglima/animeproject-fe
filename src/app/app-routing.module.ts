@@ -1,32 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DashboardComponent } from './modules/dashboard/dashboard.component';
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () =>
-      import('./modules/dashboard/dashboard.module').then(
-        (m) => m.DashboardModule
-      ),
+    redirectTo: 'dashboard',
+    pathMatch: 'full'
   },
   {
-    // path: 'inscricao/:id',
-    // loadChildren: () =>
-    //  import( caminho do componente).then((m) => m.DadosCandidatoInscricaoModule),
+    path: '',
+    component: DashboardComponent,
   }
-  // ,
-  // { path: '403', component:  },
-  // {
-  //   path: '**',
-  //   redirectTo: '/404',
-  //   resolve: {
-  //     url: 'externalUrlRedirectResolver',
-  //   },
-  //   data: {
-  //     externalUrl: `${environment.FRONT_URL}`,
-  //   },
-  // },
-  // { path: '404', component: NotFoundComponent },
 ];
 
 @NgModule({
