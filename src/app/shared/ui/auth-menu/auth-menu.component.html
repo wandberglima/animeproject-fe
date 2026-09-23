@@ -1,0 +1,17 @@
+<div class="auth-menu">
+  @if (usuario) {
+    <button
+      type="button"
+      class="auth-menu__avatar"
+      (click)="menu.toggle($event)"
+      [attr.aria-label]="'Menu de ' + usuario.nome">
+      <p-avatar icon="pi pi-user" shape="circle" />
+    </button>
+    <p-menu #menu [popup]="true" [model]="itens" appendTo="body" />
+  } @else {
+    <button type="button" class="auth-menu__entrar" (click)="iniciarSessao()">
+      <i class="pi pi-user"></i>
+      <span>Entrar</span>
+    </button>
+  }
+</div>

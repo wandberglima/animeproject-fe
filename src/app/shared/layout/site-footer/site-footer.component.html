@@ -1,0 +1,16 @@
+<footer class="site-footer">
+  <div class="site-footer__container">
+    <app-site-logo [texto]="texto" />
+
+    <p class="site-footer__copy">
+      &copy; {{ ano }} {{ texto }} — Assistir animes online grátis, legendados e dublados.
+    </p>
+
+    <nav class="site-footer__links" aria-label="Links do rodapé">
+      <a routerLink="/">Início</a>
+      <a routerLink="/animes">Lista de Animes</a>
+      <a href="#" (click)="$event.preventDefault()">Contato</a>
+      <a href="#" (click)="$event.preventDefault()">Aviso Legal</a>
+    </nav>
+  </div>
+</footer>

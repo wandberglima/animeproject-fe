@@ -1,0 +1,150 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.home__secao {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.home__secao--grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.home__grade--episodios {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+}
+
+.home__linha {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 1rem;
+}
+
+.home__populares {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.populares {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.populares__item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.populares__rank {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--texto-suave);
+  width: 2.5rem;
+  text-align: center;
+}
+
+.populares__link {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-decoration: none;
+  flex: 1;
+}
+
+.populares__poster {
+  width: 4.5rem;
+  height: 6.5rem;
+  object-fit: cover;
+  border-radius: var(--borda-raio);
+  background: var(--superficie-2);
+}
+
+.populares__titulo {
+  margin: 0 0 0.4rem;
+  color: var(--texto);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.populares__link:hover .populares__titulo {
+  color: var(--primaria);
+}
+
+.home-generos {
+  padding: 1.5rem;
+  border-radius: var(--borda-raio);
+  background: var(--superficie-1);
+}
+
+.home-generos__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+.home-generos__item {
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  background: var(--superficie-2);
+  color: var(--texto-suave);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.home-generos__item:hover {
+  background: var(--primaria);
+  color: var(--texto-contraste);
+}
+
+@media (max-width: 1280px) {
+  .home__linha {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .home__grade--episodios {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .home__secao--grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .home__linha {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .home__grade--episodios {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .home__linha {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .home__grade--episodios {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

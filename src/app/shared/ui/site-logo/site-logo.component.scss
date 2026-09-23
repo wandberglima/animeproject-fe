@@ -1,0 +1,36 @@
+.site-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text);
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+  user-select: none;
+
+  &:hover {
+    color: var(--text);
+  }
+
+  &__icone {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--primary), #7c4dff);
+    color: #fff;
+    font-size: 0.8rem;
+
+    i {
+      margin-left: 1px;
+    }
+  }
+
+  &__texto {
+    @media (max-width: 480px) {
+      display: none;
+    }
+  }
+}

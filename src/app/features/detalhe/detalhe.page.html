@@ -1,0 +1,28 @@
+@if (carregando) {
+  <app-loading-spinner />
+} @else if (erro) {
+  <app-empty-state
+    icone="pi pi-wifi"
+    mensagem="Não foi possível carregar os dados do anime. Verifique se a API está no ar e tente novamente.">
+    <button class="btn-tentar" (click)="carregar()">Tentar novamente</button>
+  </app-empty-state>
+} @else if (anime) {
+  <div class="detalhe">
+    <app-anime-hero
+      [anime]="anime"
+      [favoritado]="favoritado"
+      [favoritadoCarregando]="favoritadoCarregando"
+      (alternarFavorito)="alternarFavorito()" />
+
+    @if (anime.temporadas.length) {
+      <section class="detalhe__secao">
+        <app-section-header titulo="Episódios" [subtitulo]="anime.temporadas.length + ' temporada(s)'" />
+        <app-episodio-lista [animeId]="anime.id" [temporadas]="anime.temporadas" />
+      </section>
+    } @else {
+      <app-empty-state
+        icone="pi pi-play"
+        mensagem="Este anime ainda não possui episódios cadastrados." />
+    }
+  </div>
+}

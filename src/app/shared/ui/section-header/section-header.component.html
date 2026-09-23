@@ -1,0 +1,18 @@
+<div class="section-header">
+  <div class="section-header__titulos">
+    <h2 class="section-header__titulo">{{ titulo }}</h2>
+    @if (subtitulo) {
+      <p class="section-header__subtitulo">{{ subtitulo }}</p>
+    }
+  </div>
+  @if (exibirLink) {
+    <a
+      class="section-header__link"
+      (click)="verMais.emit()"
+      [routerLink]="link || undefined"
+      [queryParams]="queryParams">
+      {{ linkLabel }}
+      <i class="pi pi-chevron-right section-header__seta"></i>
+    </a>
+  }
+</div>

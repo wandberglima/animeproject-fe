@@ -1,0 +1,28 @@
+@for (temporada of temporadas; track temporada.numero) {
+  <section class="episodios">
+    <h3 class="episodios__titulo">
+      Temporada {{ temporada.numero }}
+      @if (temporada.titulo) {
+        <span class="episodios__temporada-titulo">{{ temporada.titulo }}</span>
+      }
+    </h3>
+
+    @if (temporada.episodios.length) {
+      <div class="episodios__grade">
+        @for (episodio of temporada.episodios; track episodio.id) {
+          <a
+            class="episodios__item"
+            [class.episodios__item--atual]="episodio.numero === episodioAtual"
+            [routerLink]="rotaDoEpisodio(episodio)"
+            routerLinkActive="episodios__item--ativo"
+            [routerLinkActiveOptions]="{ exact: true }">
+            <span class="episodios__item-numero">Ep. {{ episodio.numero }}</span>
+            <span class="episodios__item-titulo">{{ episodio.titulo }}</span>
+          </a>
+        }
+      </div>
+    } @else {
+      <p class="episodios__vazio">Nenhum episódio disponível nesta temporada.</p>
+    }
+  </section>
+}

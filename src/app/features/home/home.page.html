@@ -1,0 +1,80 @@
+@if (carregando) {
+  <app-loading-spinner />
+} @else if (erro) {
+  <app-empty-state
+    icone="pi pi-wifi"
+    mensagem="Não foi possível carregar os dados. Verifique se a API está no ar e tente novamente.">
+    <button class="btn-tentar" (click)="carregar()">Tentar novamente</button>
+  </app-empty-state>
+} @else if (dados) {
+  <div class="home">
+    @if (dados.destaques.length) {
+      <app-hero-carousel [destaques]="dados.destaques" />
+    }
+
+    <section class="home__secao">
+      <app-section-header titulo="Últimos Episódios" link="/animes" />
+      @if (dados.ultimosEpisodios.length) {
+        <div class="home__grade--episodios">
+          @for (episodio of dados.ultimosEpisodios; track episodio.episodio.id) {
+            <app-episodio-card [episodioRecente]="episodio" />
+          }
+        </div>
+      } @else {
+        <app-empty-state mensagem="Nenhum episódio disponível ainda." />
+      }
+    </section>
+
+    <section class="home__secao">
+      <app-section-header titulo="Animes Recentes" link="/animes" />
+      @if (dados.recentes.length) {
+        <div class="home__linha">
+          @for (anime of dados.recentes; track anime.id) {
+            <app-anime-card [anime]="anime" />
+          }
+        </div>
+      } @else {
+        <app-empty-state mensagem="Nenhum anime cadastrado ainda." />
+      }
+    </section>
+
+    <section class="home__secao home__secao--grid">
+      <div class="home__populares">
+        <app-section-header
+          titulo="Populares"
+          link="/animes"
+          [queryParams]="{ ordenacao: 'avaliacao' }"
+          linkLabel="Ver ranking" />
+        @if (dados.populares.length) {
+          <ol class="populares">
+            @for (anime of dados.populares; track anime.id; let i = $index) {
+              <li class="populares__item">
+                <span class="populares__rank">{{ i + 1 }}</span>
+                <a class="populares__link" [routerLink]="['/animes', anime.id]">
+                  <img class="populares__poster" [src]="anime.capaUrl" [alt]="anime.titulo" loading="lazy" />
+                  <div class="populares__info">
+                    <p class="populares__titulo">{{ anime.titulo }}</p>
+                    <app-rating-badge [nota]="anime.nota" />
+                  </div>
+                </a>
+              </li>
+            }
+          </ol>
+        } @else {
+          <app-empty-state mensagem="Nenhum anime avaliado ainda." />
+        }
+      </div>
+
+      <aside class="home-generos">
+        <app-section-header titulo="Gêneros" />
+        <div class="home-generos__grid">
+          @for (genero of generos; track genero.id) {
+            <a class="home-generos__item" [routerLink]="['/animes']" [queryParams]="{ genero: genero.id }">
+              {{ genero.nome }}
+            </a>
+          }
+        </div>
+      </aside>
+    </section>
+  </div>
+}

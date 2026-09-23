@@ -1,0 +1,7 @@
+@if (idioma) {
+  <span
+    class="idioma-badge"
+    [class]="'idioma-badge--' + idioma.toLowerCase()">
+    {{ labels[idioma] }}
+  </span>
+}

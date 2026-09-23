@@ -1,0 +1,22 @@
+@if (videoUrl) {
+  @if (ehIframe) {
+    <div class="video-player">
+      <iframe
+        class="video-player__iframe"
+        [src]="videoUrl | safeUrl"
+        title="Player de vídeo"
+        allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+        allowfullscreen
+        referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+  } @else {
+    <div class="video-player">
+      <video class="video-player__video" [src]="videoUrl" controls></video>
+    </div>
+  }
+} @else {
+  <div class="video-player video-player--vazio">
+    <i class="pi pi-video"></i>
+    <p>Este episódio ainda não possui vídeo disponível.</p>
+  </div>
+}

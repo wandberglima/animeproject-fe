@@ -1,0 +1,48 @@
+<header class="site-header">
+  <div class="site-header__container">
+    <app-site-logo />
+
+    <nav class="site-header__nav" aria-label="Navegação principal">
+      <a
+        routerLink="/"
+        routerLinkActive="site-header__link--ativo"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="site-header__link">Início</a
+      >
+      <a routerLink="/animes" routerLinkActive="site-header__link--ativo" class="site-header__link">
+        Lista de Animes
+      </a>
+      <a
+        routerLink="/animes"
+        [queryParams]="{ idioma: 'LEGENDADO' }"
+        class="site-header__link">Legendado</a
+      >
+      <a
+        routerLink="/animes"
+        [queryParams]="{ idioma: 'DUBLADO' }"
+        class="site-header__link">Dublado</a
+      >
+      <a routerLink="/" routerLinkActive="site-header__link--ativo" class="site-header__link">
+        Episódios
+      </a>
+      <a routerLink="/animes" class="site-header__link">Gêneros</a>
+    </nav>
+
+    <div class="site-header__filtros">
+      <app-pesquisa-input (buscar)="aoBuscar($event)" />
+      <app-select-genero [genero]="generoSelecionado" (generoChange)="aoFiltrarGenero($event)" />
+    </div>
+
+    <div class="site-header__acoes">
+      <app-auth-menu [usuario]="usuario" (loginClick)="aoLogin()" (logout)="aoLogout()" />
+      <button
+        type="button"
+        class="site-header__menu-btn"
+        aria-label="Abrir menu"
+        (click)="mobileMenu.toggle($event)">
+        <i class="pi pi-bars"></i>
+      </button>
+      <p-menu #mobileMenu [popup]="true" [model]="itensMobile" appendTo="body" />
+    </div>
+  </div>
+</header>

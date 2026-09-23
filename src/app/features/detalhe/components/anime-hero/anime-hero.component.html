@@ -1,0 +1,44 @@
+@if (anime) {
+  <section class="detalhe-hero" [style.backgroundImage]="fundo">
+    <div class="detalhe-hero__fundo"></div>
+    <div class="detalhe-hero__conteudo">
+      <img class="detalhe-hero__poster" [src]="anime.capaUrl" [alt]="anime.titulo" />
+      <div class="detalhe-hero__info">
+        <h1 class="detalhe-hero__titulo">{{ anime.titulo }}</h1>
+        @if (anime.tituloOriginal) {
+          <p class="detalhe-hero__titulo-original">{{ anime.tituloOriginal }}</p>
+        }
+
+        <div class="detalhe-hero__meta">
+          <app-rating-badge [nota]="anime.nota" />
+          <span class="detalhe-hero__badge">{{ anime.ano }}</span>
+          <span class="detalhe-hero__badge">{{ statusLabel[anime.status] }}</span>
+          <span class="detalhe-hero__badge">{{ idiomaLabel[anime.idioma] }}</span>
+        </div>
+
+        <div class="detalhe-hero__generos">
+          @for (genero of anime.generos; track genero.id) {
+            <a class="detalhe-hero__genero" [routerLink]="['/animes']" [queryParams]="{ genero: genero.id }">
+              {{ genero.nome }}
+            </a>
+          }
+        </div>
+
+        <p class="detalhe-hero__sinopse">{{ anime.sinopse }}</p>
+
+        <div class="detalhe-hero__acoes">
+          <a
+            class="detalhe-hero__botao detalhe-hero__botao--primario"
+            [routerLink]="['/assistir', anime.id, primeiroEpisodioNumero]">
+            <i class="pi pi-play"></i>
+            Assistir agora
+          </a>
+          <app-favorito-button
+            [ativo]="favoritado"
+            [carregando]="favoritadoCarregando"
+            (toggle)="alternarFavorito.emit()" />
+        </div>
+      </div>
+    </div>
+  </section>
+}

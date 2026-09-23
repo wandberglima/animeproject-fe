@@ -1,0 +1,18 @@
+@if (anime) {
+  <article class="anime-card">
+    <a class="anime-card__link" [routerLink]="rota" (click)="abrirDetalhes.emit()">
+      <div class="anime-card__poster">
+        <img [src]="anime.capaUrl" [alt]="anime.titulo" loading="lazy" />
+        <div class="anime-card__overlay">
+          <span class="anime-card__play"><i class="pi pi-play"></i></span>
+        </div>
+        <div class="anime-card__nota">
+          <app-rating-badge [nota]="anime.nota" />
+        </div>
+      </div>
+      <div class="anime-card__corpo">
+        <h3 class="anime-card__titulo">{{ anime.titulo }}</h3>
+      </div>
+    </a>
+  </article>
+}

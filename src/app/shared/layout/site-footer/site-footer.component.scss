@@ -1,0 +1,40 @@
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 1.5rem 1rem 2rem;
+
+  &__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  &__copy {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  &__links {
+    display: flex;
+    gap: 1rem;
+
+    a {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+
+      &:hover {
+        color: var(--text);
+      }
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .site-footer__container {
+    flex-direction: column;
+    text-align: center;
+  }
+}

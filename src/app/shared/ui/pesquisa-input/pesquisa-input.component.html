@@ -1,0 +1,10 @@
+<div class="pesquisa-input">
+  <p-iconfield>
+    <p-inputicon styleClass="pi pi-search" />
+    <input
+      pInputText
+      [(ngModel)]="termoLocal"
+      [placeholder]="placeholder"
+      (keyup.enter)="aoBuscar()" />
+  </p-iconfield>
+</div>

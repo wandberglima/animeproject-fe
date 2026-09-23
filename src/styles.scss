@@ -12,6 +12,18 @@
   --success: #66bb6a;
   --danger: #ef5350;
   --radius: 10px;
+
+  /* aliases usados pelos features */
+  --superficie-1: var(--bg-elevated);
+  --superficie-2: var(--bg-hover);
+  --borda-raio: var(--radius);
+  --borda: var(--border);
+  --texto: var(--text);
+  --texto-suave: var(--text-muted);
+  --texto-contraste: #ffffff;
+  --primaria: var(--primary);
+  --primaria-hover: var(--primary-hover);
+  --primaria-soft: var(--primary-soft);
 }
 
 * {
@@ -74,4 +86,23 @@ img {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
+}
+
+.btn-tentar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--texto-contraste);
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-tentar:hover {
+  background: var(--primary-hover);
 }

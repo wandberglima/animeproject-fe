@@ -1,0 +1,41 @@
+<div class="catalogo">
+  <app-section-header titulo="Animes" [subtitulo]="subtitulo" />
+
+  <app-filtros-barra
+    [filtros]="filtros"
+    [total]="resultado.total"
+    (alterar)="aplicarAlteracao($event)"
+    (limpar)="aoLimpar()" />
+
+  @if (carregando) {
+    <app-loading-spinner />
+  } @else if (erro) {
+    <app-empty-state
+      icone="pi pi-wifi"
+      mensagem="Não foi possível carregar os animes. Verifique se a API está no ar e tente novamente.">
+      <button class="btn-tentar" (click)="carregar()">Tentar novamente</button>
+    </app-empty-state>
+  } @else if (resultado.itens.length) {
+    <p class="catalogo__contagem">
+      {{ resultado.total }} {{ resultado.total === 1 ? 'anime encontrado' : 'animes encontrados' }}
+    </p>
+
+    <div class="catalogo__grade">
+      @for (anime of resultado.itens; track anime.id) {
+        <app-anime-card [anime]="anime" />
+      }
+    </div>
+
+    @if (resultado.totalPaginas > 1) {
+      <app-paginacao
+        [totalRecords]="resultado.total"
+        [rows]="filtros.tamanho ?? 24"
+        [pagina]="(filtros.pagina ?? 1) - 1"
+        (paginaChange)="aoMudarPagina($event)" />
+    }
+  } @else {
+    <app-empty-state
+      icone="pi pi-search"
+      mensagem="Nenhum anime encontrado com os filtros selecionados." />
+  }
+</div>

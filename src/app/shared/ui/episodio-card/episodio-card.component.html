@@ -1,0 +1,21 @@
+@if (episodioRecente) {
+  <article class="episodio-card">
+    <a
+      class="episodio-card__link"
+      [routerLink]="rota"
+      [attr.aria-label]="episodioRecente.anime.titulo + ' - Episódio ' + episodioRecente.episodio.numero">
+      <div class="episodio-card__thumb">
+        <img
+          [src]="episodioRecente.anime.capaUrl"
+          [alt]="episodioRecente.anime.titulo"
+          loading="lazy" />
+        <span class="episodio-card__numero">Ep. {{ episodioRecente.episodio.numero }}</span>
+      </div>
+      <div class="episodio-card__body">
+        <app-idioma-badge [idioma]="episodioRecente.episodio.idioma" />
+        <p class="episodio-card__titulo">{{ episodioRecente.anime.titulo }}</p>
+        <p class="episodio-card__meta">{{ data }}</p>
+      </div>
+    </a>
+  </article>
+}

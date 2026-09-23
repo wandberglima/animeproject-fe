@@ -1,0 +1,125 @@
+.hero {
+  position: relative;
+  display: block;
+  min-height: 340px;
+  border-radius: var(--borda-raio);
+  overflow: hidden;
+  background-color: var(--superficie-2);
+  background-size: cover;
+  background-position: center;
+  text-decoration: none;
+}
+
+.hero__fundo {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(10, 10, 18, 0.95) 0%, rgba(10, 10, 18, 0.6) 55%, rgba(10, 10, 18, 0.1) 100%);
+}
+
+.hero__conteudo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: 620px;
+  min-height: 340px;
+  justify-content: center;
+  padding: 2rem;
+  z-index: 1;
+}
+
+.hero__tag {
+  align-self: flex-start;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: var(--primaria);
+  color: var(--texto-contraste);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.hero__titulo {
+  margin: 0;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 800;
+  color: var(--texto);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+
+.hero__sinopse {
+  margin: 0;
+  color: var(--texto-suave);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.hero__meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+
+.hero__status {
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: var(--superficie-2);
+  color: var(--texto);
+}
+
+.hero__acoes {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.hero__botao {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.4rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.hero__botao--primario {
+  background: var(--primaria);
+  color: var(--texto-contraste);
+}
+
+.hero__botao--primario:hover {
+  background: var(--primaria-hover);
+}
+
+.hero__botao--secundario {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--texto);
+  backdrop-filter: blur(4px);
+}
+
+.hero__botao--secundario:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 640px) {
+  .hero,
+  .hero__conteudo {
+    min-height: 260px;
+  }
+
+  .hero__conteudo {
+    padding: 1.25rem;
+  }
+
+  .hero__sinopse {
+    -webkit-line-clamp: 3;
+  }
+}

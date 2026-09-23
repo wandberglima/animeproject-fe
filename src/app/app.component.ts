@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CabecalhoComponent } from './modules/containers/components/cabecalho/cabecalho.component';
-import { RodapeComponent } from './modules/containers/components/rodape/rodape.component';
+import { SiteHeaderComponent } from './shared/layout/site-header/site-header.component';
+import { SiteFooterComponent } from './shared/layout/site-footer/site-footer.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  imports: [RouterOutlet, CabecalhoComponent, RodapeComponent],
+  imports: [RouterOutlet, SiteHeaderComponent, SiteFooterComponent],
 })
 export class AppComponent {
   title = 'aniprojects';

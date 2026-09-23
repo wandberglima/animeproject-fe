@@ -1,0 +1,134 @@
+.detalhe-hero {
+  position: relative;
+  border-radius: var(--borda-raio);
+  overflow: hidden;
+  background-color: var(--superficie-2);
+  background-size: cover;
+  background-position: center;
+}
+
+.detalhe-hero__fundo {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(10, 10, 18, 0.95) 0%, rgba(10, 10, 18, 0.75) 60%, rgba(10, 10, 18, 0.4) 100%);
+}
+
+.detalhe-hero__conteudo {
+  position: relative;
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  z-index: 1;
+}
+
+.detalhe-hero__poster {
+  width: 200px;
+  height: 290px;
+  object-fit: cover;
+  border-radius: var(--borda-raio);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+}
+
+.detalhe-hero__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.detalhe-hero__titulo {
+  margin: 0;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800;
+  color: var(--texto);
+}
+
+.detalhe-hero__titulo-original {
+  margin: 0;
+  color: var(--texto-suave);
+  font-size: 0.95rem;
+}
+
+.detalhe-hero__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.detalhe-hero__badge {
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  background: var(--superficie-2);
+  color: var(--texto);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.detalhe-hero__generos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.detalhe-hero__genero {
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  background: var(--superficie-1);
+  color: var(--texto-suave);
+  font-size: 0.82rem;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.detalhe-hero__genero:hover {
+  background: var(--primaria);
+  color: var(--texto-contraste);
+}
+
+.detalhe-hero__sinopse {
+  margin: 0;
+  color: var(--texto-suave);
+  line-height: 1.6;
+  max-width: 70ch;
+}
+
+.detalhe-hero__acoes {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+.detalhe-hero__botao {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.5rem;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.detalhe-hero__botao--primario {
+  background: var(--primaria);
+  color: var(--texto-contraste);
+}
+
+.detalhe-hero__botao--primario:hover {
+  background: var(--primaria-hover);
+  color: var(--texto-contraste);
+}
+
+@media (max-width: 768px) {
+  .detalhe-hero__conteudo {
+    flex-direction: column;
+    padding: 1.25rem;
+  }
+
+  .detalhe-hero__poster {
+    width: 140px;
+    height: 200px;
+  }
+}

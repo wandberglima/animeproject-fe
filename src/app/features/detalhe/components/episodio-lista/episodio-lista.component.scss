@@ -1,0 +1,74 @@
+.episodios {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.episodios__titulo {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--texto);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.episodios__temporada-titulo {
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.episodios__grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.6rem;
+}
+
+.episodios__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.65rem 0.8rem;
+  border-radius: var(--borda-raio);
+  background: var(--superficie-1);
+  border: 1px solid var(--borda);
+  color: var(--texto);
+  text-decoration: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.episodios__item:hover {
+  border-color: var(--primaria);
+  background: var(--superficie-2);
+  color: var(--texto);
+}
+
+.episodios__item--ativo {
+  border-color: var(--primaria);
+  background: var(--primaria-soft);
+}
+
+.episodios__item--atual {
+  border-color: var(--primaria);
+}
+
+.episodios__item-numero {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.episodios__item-titulo {
+  color: var(--texto-suave);
+  font-size: 0.8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.episodios__vazio {
+  margin: 0;
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+}

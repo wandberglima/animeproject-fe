@@ -1,0 +1,35 @@
+.minha-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.minha-lista__grade {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 1280px) {
+  .minha-lista__grade {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .minha-lista__grade {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .minha-lista__grade {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .minha-lista__grade {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

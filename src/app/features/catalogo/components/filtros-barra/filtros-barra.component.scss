@@ -1,0 +1,51 @@
+.filtros {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: var(--borda-raio);
+  background: var(--superficie-1);
+}
+
+.filtros__linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.filtros__busca {
+  flex: 1 1 260px;
+}
+
+.filtros__letras {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.filtros__letra {
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--borda);
+  border-radius: 0.5rem;
+  background: var(--superficie-2);
+  color: var(--texto-suave);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.filtros__letra:hover {
+  border-color: var(--primaria);
+  color: var(--texto);
+}
+
+.filtros__letra--ativa {
+  background: var(--primaria);
+  border-color: var(--primaria);
+  color: var(--texto-contraste);
+}

@@ -1,0 +1,86 @@
+<div class="login">
+  <div class="login__card">
+    <h1 class="login__titulo">
+      {{ modo === 'entrar' ? 'Entrar' : 'Criar conta' }}
+    </h1>
+    <p class="login__subtitulo">
+      {{ modo === 'entrar' ? 'Acesse sua conta para salvar sua lista.' : 'Cadastre-se para começar a montar sua lista.' }}
+    </p>
+
+    <div class="login__abas" role="tablist">
+      <button
+        type="button"
+        class="login__aba"
+        [class.login__aba--ativa]="modo === 'entrar'"
+        (click)="alternarModo('entrar')">
+        Entrar
+      </button>
+      <button
+        type="button"
+        class="login__aba"
+        [class.login__aba--ativa]="modo === 'cadastrar'"
+        (click)="alternarModo('cadastrar')">
+        Criar conta
+      </button>
+    </div>
+
+    <form class="login__campos" (ngSubmit)="enviar()">
+      @if (modo === 'cadastrar') {
+        <div class="login__campo">
+          <label class="login__label" for="nome">Nome</label>
+          <input
+            id="nome"
+            pInputText
+            class="login__input"
+            type="text"
+            autocomplete="name"
+            placeholder="Seu nome"
+            [(ngModel)]="nome"
+            name="nome" />
+        </div>
+      }
+
+      <div class="login__campo">
+        <label class="login__label" for="email">E-mail</label>
+        <input
+          id="email"
+          pInputText
+          class="login__input"
+          type="email"
+          autocomplete="email"
+          placeholder="voce@email.com"
+          [(ngModel)]="email"
+          name="email" />
+      </div>
+
+      <div class="login__campo">
+        <label class="login__label" for="senha">Senha</label>
+        <input
+          id="senha"
+          pInputText
+          class="login__input"
+          type="password"
+          autocomplete="current-password"
+          placeholder="Mínimo de 6 caracteres"
+          [(ngModel)]="senha"
+          name="senha" />
+      </div>
+
+      @if (erro) {
+        <p-message severity="error" [text]="mensagemErro" class="login__mensagem" />
+      }
+
+      <p-button
+        type="submit"
+        [label]="modo === 'entrar' ? 'Entrar' : 'Criar conta'"
+        [loading]="carregando"
+        [disabled]="!valido"
+        styleClass="login__botao" />
+
+      <a class="login__voltar" routerLink="/">
+        <i class="pi pi-arrow-left"></i>
+        Voltar para a Home
+      </a>
+    </form>
+  </div>
+</div>

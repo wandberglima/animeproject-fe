@@ -1,0 +1,24 @@
+.status-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+
+  &--em_lancamento {
+    background: var(--primary-soft);
+    color: var(--primary);
+  }
+
+  &--completo {
+    background: rgba(102, 187, 106, 0.15);
+    color: var(--success);
+  }
+
+  &--em_breve {
+    background: rgba(255, 183, 77, 0.15);
+    color: var(--accent);
+  }
+}

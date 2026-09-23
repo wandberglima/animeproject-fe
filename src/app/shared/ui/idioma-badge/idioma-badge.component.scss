@@ -1,0 +1,19 @@
+.idioma-badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+
+  &--legendado {
+    background: rgba(79, 140, 255, 0.15);
+    color: var(--primary);
+  }
+
+  &--dublado {
+    background: rgba(124, 77, 255, 0.18);
+    color: #b794ff;
+  }
+}

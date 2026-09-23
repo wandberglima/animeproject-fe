@@ -1,0 +1,23 @@
+<div class="minha-lista">
+  <app-section-header titulo="Minha Lista" [subtitulo]="favoritos.length + ' anime(s) salvo(s)'" />
+
+  @if (carregando) {
+    <app-loading-spinner />
+  } @else if (erro) {
+    <app-empty-state
+      icone="pi pi-wifi"
+      mensagem="Não foi possível carregar sua lista. Verifique se a API está no ar e tente novamente.">
+      <button class="btn-tentar" (click)="carregar()">Tentar novamente</button>
+    </app-empty-state>
+  } @else if (favoritos.length) {
+    <div class="minha-lista__grade">
+      @for (anime of favoritos; track anime.id) {
+        <app-anime-card [anime]="anime" />
+      }
+    </div>
+  } @else {
+    <app-empty-state icone="pi pi-heart" mensagem="Sua lista está vazia. Comece adicionando animes.">
+      <a class="btn-tentar" routerLink="/animes">Explorar animes</a>
+    </app-empty-state>
+  }
+</div>

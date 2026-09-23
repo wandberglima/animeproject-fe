@@ -1,0 +1,70 @@
+<div class="filtros">
+  <div class="filtros__linha">
+    <div class="filtros__busca">
+      <app-pesquisa-input [termo]="busca" placeholder="Buscar anime..." (buscar)="aoBuscar($event)" />
+    </div>
+
+    <app-select-genero [genero]="generoSelecionado" (generoChange)="aoSelecionarGenero($event)" />
+
+    <p-select
+      [options]="statusOpcoes"
+      optionLabel="nome"
+      optionValue="id"
+      [showClear]="true"
+      placeholder="Status"
+      appendTo="body"
+      [(ngModel)]="statusSelecionado"
+      (ngModelChange)="aoSelecionarStatus($event)" />
+
+    <p-select
+      [options]="idiomaOpcoes"
+      optionLabel="nome"
+      optionValue="id"
+      [showClear]="true"
+      placeholder="Idioma"
+      appendTo="body"
+      [(ngModel)]="idiomaSelecionado"
+      (ngModelChange)="aoSelecionarIdioma($event)" />
+
+    <p-select
+      [options]="anos"
+      [showClear]="true"
+      placeholder="Ano"
+      appendTo="body"
+      [(ngModel)]="anoSelecionado"
+      (ngModelChange)="aoSelecionarAno($event)" />
+  </div>
+
+  <div class="filtros__linha filtros__linha--extra">
+    <p-select
+      [options]="ordenacoes"
+      optionLabel="nome"
+      optionValue="id"
+      placeholder="Ordenar por"
+      [showClear]="true"
+      appendTo="body"
+      [(ngModel)]="ordenacaoSelecionada"
+      (ngModelChange)="aoSelecionarOrdenacao($event)" />
+
+    @if (temFiltro) {
+      <p-button
+        icon="pi pi-times"
+        [text]="true"
+        severity="secondary"
+        label="Limpar filtros"
+        (onClick)="aoLimpar()" />
+    }
+  </div>
+
+  <div class="filtros__letras">
+    @for (letra of letras; track letra) {
+      <button
+        type="button"
+        class="filtros__letra"
+        [class.filtros__letra--ativa]="letraSelecionada === letra"
+        (click)="aoSelecionarLetra(letra)">
+        {{ letra }}
+      </button>
+    }
+  </div>
+</div>

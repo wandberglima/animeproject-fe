@@ -1,0 +1,7 @@
+<p-button
+  [icon]="ativo ? 'pi pi-heart-fill' : 'pi pi-heart'"
+  [label]="ativo ? 'Salvo' : 'Favoritar'"
+  [text]="true"
+  severity="secondary"
+  [loading]="carregando"
+  (onClick)="aoClicar()" />

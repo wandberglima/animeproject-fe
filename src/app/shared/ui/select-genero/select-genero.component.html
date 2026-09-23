@@ -1,0 +1,10 @@
+<div class="select-genero">
+  <p-select
+    [options]="generos"
+    optionLabel="nome"
+    optionValue="id"
+    [ngModel]="genero"
+    (ngModelChange)="aoSelecionar($event)"
+    [placeholder]="placeholder"
+    [showClear]="true" />
+</div>

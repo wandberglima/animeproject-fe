@@ -1,18 +1,45 @@
 import { Routes } from '@angular/router';
 
+import { authGuard } from './core/guards/auth.guard';
+
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
     pathMatch: 'full',
+    loadComponent: () => import('./features/home/home.page').then((m) => m.HomePageComponent),
+    title: 'Início',
   },
   {
-    path: 'dashboard',
-    loadChildren: () =>
-      import('./modules/dashboard/dashboard.routes').then((m) => m.dashboardRoutes),
+    path: 'animes',
+    loadComponent: () =>
+      import('./features/catalogo/catalogo.page').then((m) => m.CatalogoPageComponent),
+    title: 'Lista de Animes',
+  },
+  {
+    path: 'animes/:id',
+    loadComponent: () =>
+      import('./features/detalhe/detalhe.page').then((m) => m.DetalhePageComponent),
+    title: 'Anime',
+  },
+  {
+    path: 'assistir/:animeId/:numero',
+    loadComponent: () => import('./features/player/player.page').then((m) => m.PlayerPageComponent),
+    title: 'Assistir',
+  },
+  {
+    path: 'login',
+    loadComponent: () => import('./features/login/login.page').then((m) => m.LoginPageComponent),
+    title: 'Entrar',
+  },
+  {
+    path: 'minha-lista',
+    loadComponent: () =>
+      import('./features/minha-lista/minha-lista.page').then((m) => m.MinhaListaPageComponent),
+    title: 'Minha Lista',
+    canActivate: [authGuard],
   },
   {
     path: '**',
-    redirectTo: 'dashboard',
+    redirectTo: '',
   },
 ];

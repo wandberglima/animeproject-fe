@@ -1,0 +1,55 @@
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+
+  &__titulos {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  &__subtitulo {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  &__titulo {
+    position: relative;
+    font-size: 1.35rem;
+    font-weight: 700;
+    padding-left: 0.75rem;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 1.15em;
+      border-radius: 2px;
+      background: var(--primary);
+    }
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--primary-hover);
+    }
+  }
+
+  &__seta {
+    font-size: 0.7rem;
+  }
+}

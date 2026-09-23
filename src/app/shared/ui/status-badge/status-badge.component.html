@@ -1,0 +1,7 @@
+@if (status) {
+  <span
+    class="status-badge"
+    [class]="'status-badge--' + status.toLowerCase()">
+    {{ labels[status] }}
+  </span>
+}

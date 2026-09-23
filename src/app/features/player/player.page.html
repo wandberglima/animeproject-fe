@@ -1,0 +1,59 @@
+@if (carregando) {
+  <app-loading-spinner />
+} @else if (erro) {
+  <app-empty-state
+    icone="pi pi-wifi"
+    mensagem="Não foi possível carregar o episódio. Verifique se a API está no ar e tente novamente.">
+    <button class="btn-tentar" (click)="carregar()">Tentar novamente</button>
+  </app-empty-state>
+} @else if (anime) {
+  <div class="player">
+    <section class="player__principal">
+      <app-video-player [videoUrl]="episodio?.videoUrl ?? ''" />
+
+      <div class="player__info">
+        <h1 class="player__titulo">{{ anime.titulo }}</h1>
+        @if (episodio) {
+          <p class="player__subtitulo">
+            Episódio {{ episodio.numero }} ·
+            Temporada {{ episodio.temporada }} ·
+            {{ episodio.titulo }}
+          </p>
+        } @else {
+          <p class="player__subtitulo">Episódio {{ numeroParam }} não encontrado para este anime.</p>
+        }
+      </div>
+
+      <div class="player__navegacao">
+        @if (anterior) {
+          <a class="player__botao" [routerLink]="['/assistir', anime.id, anterior.numero]">
+            <i class="pi pi-step-backward"></i>
+            Anterior
+          </a>
+        }
+        <a class="player__botao" [routerLink]="['/animes', anime.id]">
+          <i class="pi pi-arrow-left"></i>
+          Detalhes
+        </a>
+        @if (proximo) {
+          <a class="player__botao player__botao--primario" [routerLink]="['/assistir', anime.id, proximo.numero]">
+            Próximo
+            <i class="pi pi-step-forward"></i>
+          </a>
+        }
+      </div>
+    </section>
+
+    <aside class="player__lista">
+      <h2 class="player__lista-titulo">Episódios</h2>
+      @if (anime.temporadas.length) {
+        <app-episodio-lista
+          [animeId]="anime.id"
+          [temporadas]="anime.temporadas"
+          [episodioAtual]="numeroParam" />
+      } @else {
+        <p class="player__lista-vazio">Nenhum episódio cadastrado.</p>
+      }
+    </aside>
+  </div>
+}

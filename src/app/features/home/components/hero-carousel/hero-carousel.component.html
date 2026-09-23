@@ -1,0 +1,35 @@
+@if (destaques.length) {
+  <p-carousel
+    [value]="destaques"
+    [numVisible]="1"
+    [numScroll]="1"
+    [circular]="true"
+    [autoplayInterval]="7000"
+    [showIndicators]="true"
+    [showNavigators]="true">
+    <ng-template pTemplate="item" let-destaque>
+      <a class="hero" [routerLink]="['/animes', destaque.anime.id]" [style.backgroundImage]="fundo(destaque)">
+        <div class="hero__fundo"></div>
+        <div class="hero__conteudo">
+          @if (destaque.tag) {
+            <span class="hero__tag">{{ destaque.tag }}</span>
+          }
+          <h2 class="hero__titulo">{{ destaque.anime.titulo }}</h2>
+          <p class="hero__sinopse">{{ destaque.anime.sinopse }}</p>
+          <div class="hero__meta">
+            <app-rating-badge [nota]="destaque.anime.nota" />
+            <span class="hero__ano">{{ destaque.anime.ano }}</span>
+            <span class="hero__status">{{ statusDoAnime(destaque.anime.status) }}</span>
+          </div>
+          <div class="hero__acoes">
+            <span class="hero__botao hero__botao--primario">
+              <i class="pi pi-play"></i>
+              Assistir
+            </span>
+            <span class="hero__botao hero__botao--secundario">Ver detalhes</span>
+          </div>
+        </div>
+      </a>
+    </ng-template>
+  </p-carousel>
+}
