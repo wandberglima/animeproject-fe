@@ -2,9 +2,10 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { MenuItem } from "primeng/api";
 
 @Component({
-  selector: "app-cabecalho",
-  templateUrl: "./cabecalho.component.html",
-  styleUrls: ["./cabecalho.component.scss"],
+    selector: "app-cabecalho",
+    templateUrl: "./cabecalho.component.html",
+    styleUrls: ["./cabecalho.component.scss"],
+    standalone: false
 })
 export class CabecalhoComponent implements OnInit, OnDestroy {
   public items: MenuItem[] = [
@@ -133,7 +134,5 @@ export class CabecalhoComponent implements OnInit, OnDestroy {
 
   ngOnInit() {}
 
-  ngOnDestroy(): void {
-    throw new Error("Method not implemented.");
-  }
+  ngOnDestroy(): void {}
 }
