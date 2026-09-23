@@ -1,11 +1,15 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
+import { CommonModule } from "@angular/common";
 import { MenuItem } from "primeng/api";
+import { MenubarModule } from "primeng/menubar";
+import { InputTextModule } from "primeng/inputtext";
 
 @Component({
-    selector: "app-cabecalho",
-    templateUrl: "./cabecalho.component.html",
-    styleUrls: ["./cabecalho.component.scss"],
-    standalone: false
+  selector: "app-cabecalho",
+  standalone: true,
+  templateUrl: "./cabecalho.component.html",
+  styleUrls: ["./cabecalho.component.scss"],
+  imports: [CommonModule, MenubarModule, InputTextModule],
 })
 export class CabecalhoComponent implements OnInit, OnDestroy {
   public items: MenuItem[] = [
