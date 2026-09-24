@@ -1,0 +1,39 @@
+<div class="mangas">
+  <app-section-header titulo="Mangás" [subtitulo]="subtitulo" />
+
+  <div class="mangas__busca">
+    <app-pesquisa-input placeholder="Buscar mangás..." [termo]="termo" (buscar)="buscar($event)" />
+  </div>
+
+  @if (carregando) {
+    <app-loading-spinner />
+  } @else if (erro) {
+    <app-empty-state
+      icone="pi pi-wifi"
+      mensagem="Não foi possível carregar os mangás. Verifique se a API está no ar e tente novamente.">
+      <button class="btn-tentar" (click)="carregar()">Tentar novamente</button>
+    </app-empty-state>
+  } @else if (resultado.itens.length) {
+    <p class="mangas__contagem">
+      {{ resultado.total }} {{ resultado.total === 1 ? 'mangá encontrado' : 'mangás encontrados' }}
+    </p>
+
+    <div class="mangas__grade">
+      @for (manga of resultado.itens; track manga.id) {
+        <app-manga-card [manga]="manga" />
+      }
+    </div>
+
+    @if (resultado.totalPaginas > 1) {
+      <app-paginacao
+        [totalRecords]="resultado.total"
+        [rows]="tamanho"
+        [pagina]="pagina - 1"
+        (paginaChange)="aoMudarPagina($event)" />
+    }
+  } @else {
+    <app-empty-state
+      icone="pi pi-search"
+      mensagem="Nenhum mangá encontrado. Tente outra busca." />
+  }
+</div>

@@ -1,0 +1,22 @@
+@if (manga) {
+  <article class="manga-card">
+    <a class="manga-card__link" [routerLink]="rota">
+      <div class="manga-card__capa">
+        @if (manga.capaUrl) {
+          <img [src]="manga.capaUrl" [alt]="manga.titulo" loading="lazy" />
+        } @else {
+          <div class="manga-card__sem-capa"><i class="pi pi-book"></i></div>
+        }
+        <div class="manga-card__status">
+          <app-status-badge [status]="manga.status" />
+        </div>
+      </div>
+      <div class="manga-card__corpo">
+        <h3 class="manga-card__titulo">{{ manga.titulo }}</h3>
+        @if (manga.ano) {
+          <p class="manga-card__ano">{{ manga.ano }}</p>
+        }
+      </div>
+    </a>
+  </article>
+}

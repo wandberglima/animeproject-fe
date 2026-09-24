@@ -1,0 +1,45 @@
+.mangas {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.mangas__busca {
+  max-width: 26rem;
+}
+
+.mangas__contagem {
+  margin: 0;
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+}
+
+.mangas__grade {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 1280px) {
+  .mangas__grade {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .mangas__grade {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .mangas__grade {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .mangas__grade {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

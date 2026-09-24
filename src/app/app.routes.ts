@@ -22,6 +22,23 @@ export const routes: Routes = [
     title: 'Anime',
   },
   {
+    path: 'mangas',
+    loadComponent: () => import('./features/mangas/mangas.page').then((m) => m.MangasPageComponent),
+    title: 'Lista de Mangás',
+  },
+  {
+    path: 'mangas/:id',
+    loadComponent: () =>
+      import('./features/mangas/manga-detalhe.page').then((m) => m.MangaDetalhePageComponent),
+    title: 'Mangá',
+  },
+  {
+    path: 'mangas/:id/ler/:capituloId',
+    loadComponent: () =>
+      import('./features/mangas/leitor.page').then((m) => m.LeitorPageComponent),
+    title: 'Leitor',
+  },
+  {
     path: 'assistir/:animeId/:numero',
     loadComponent: () => import('./features/player/player.page').then((m) => m.PlayerPageComponent),
     title: 'Assistir',

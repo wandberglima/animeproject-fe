@@ -44,6 +44,7 @@ export class SiteHeaderComponent implements OnInit, OnDestroy {
     this.itensMobile = [
       { label: 'Início', icon: 'pi pi-home', routerLink: '/' },
       { label: 'Lista de Animes', icon: 'pi pi-th-large', routerLink: '/animes' },
+      { label: 'Mangás', icon: 'pi pi-book', routerLink: '/mangas' },
       {
         label: 'Legendado',
         icon: 'pi pi-closed-captioning',

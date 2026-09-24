@@ -1,0 +1,64 @@
+<div class="leitor">
+  <header class="leitor__cabecalho">
+    <a class="leitor__voltar" [routerLink]="'/mangas/' + mangaId" aria-label="Voltar para o mangá">
+      <i class="pi pi-arrow-left"></i>
+    </a>
+
+    <div class="leitor__titulo">
+      <h1>
+        Capítulo {{ capitulo?.numero ?? '' }}
+        @if (capitulo?.titulo) {
+          <span class="leitor__cap-titulo">{{ capitulo?.titulo }}</span>
+        }
+      </h1>
+    </div>
+
+    <div class="leitor__navegacao">
+      <button
+        type="button"
+        class="leitor__btn"
+        [disabled]="!capituloAnterior"
+        (click)="capituloAnterior && navegar(capituloAnterior)">Anterior</button>
+      <button
+        type="button"
+        class="leitor__btn leitor__btn--proximo"
+        [disabled]="!capituloProximo"
+        (click)="capituloProximo && navegar(capituloProximo)">Próximo</button>
+    </div>
+  </header>
+
+  @if (carregando) {
+    <app-loading-spinner />
+  } @else if (erro) {
+    <app-empty-state
+      icone="pi pi-wifi"
+      mensagem="Não foi possível carregar as páginas deste capítulo.">
+      <button class="btn-tentar" (click)="carregarPaginas()">Tentar novamente</button>
+    </app-empty-state>
+  } @else if (paginas.length) {
+    <div class="leitor__paginas">
+      @for (pagina of paginas; track pagina; let i = $index) {
+        <img
+          class="leitor__pagina"
+          [src]="pagina"
+          [alt]="'Página ' + (i + 1) + ' do capítulo ' + capitulo?.numero"
+          loading="lazy" />
+      }
+    </div>
+
+    <footer class="leitor__rodape">
+      <button
+        type="button"
+        class="leitor__btn"
+        [disabled]="!capituloAnterior"
+        (click)="capituloAnterior && navegar(capituloAnterior)">← Capítulo anterior</button>
+      <button
+        type="button"
+        class="leitor__btn leitor__btn--proximo"
+        [disabled]="!capituloProximo"
+        (click)="capituloProximo && navegar(capituloProximo)">Próximo capítulo →</button>
+    </footer>
+  } @else {
+    <app-empty-state icone="pi pi-inbox" mensagem="Este capítulo não possui páginas." />
+  }
+</div>

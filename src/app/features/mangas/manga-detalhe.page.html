@@ -1,0 +1,90 @@
+@if (carregando) {
+  <app-loading-spinner />
+} @else if (erro) {
+  <app-empty-state
+    icone="pi pi-wifi"
+    mensagem="Não foi possível carregar os dados do mangá. Verifique se a API está no ar e tente novamente.">
+    <button class="btn-tentar" (click)="carregar()">Tentar novamente</button>
+  </app-empty-state>
+} @else if (manga) {
+  <div class="manga-detalhe">
+    <header class="manga-detalhe__hero">
+      <div class="manga-detalhe__capa">
+        @if (manga.capaUrl) {
+          <img [src]="manga.capaUrl" [alt]="manga.titulo" />
+        } @else {
+          <div class="manga-detalhe__sem-capa"><i class="pi pi-book"></i></div>
+        }
+      </div>
+
+      <div class="manga-detalhe__info">
+        <h1 class="manga-detalhe__titulo">{{ manga.titulo }}</h1>
+
+        <div class="manga-detalhe__metadados">
+          @if (statusValido(manga.status)) {
+            <app-status-badge [status]="manga.status" />
+          }
+          @if (manga.ano) {
+            <span class="manga-detalhe__ano">{{ manga.ano }}</span>
+          }
+        </div>
+
+        @if (manga.autores.length) {
+          <p class="manga-detalhe__autores">
+            <strong>Autores:</strong> {{ manga.autores.join(', ') }}
+          </p>
+        }
+
+        @if (manga.generos.length) {
+          <div class="manga-detalhe__generos">
+            @for (genero of manga.generos; track genero) {
+              <span class="manga-detalhe__genero">{{ genero }}</span>
+            }
+          </div>
+        }
+
+        @if (manga.descricao) {
+          <p class="manga-detalhe__descricao">{{ manga.descricao }}</p>
+        }
+
+        <a class="manga-detalhe__voltar" routerLink="/mangas">
+          <i class="pi pi-arrow-left"></i> Voltar para a listagem
+        </a>
+      </div>
+    </header>
+
+    <section class="manga-detalhe__capitulos">
+      <app-section-header
+        titulo="Capítulos"
+        [subtitulo]="capitulos.total + ' capítulo(s)'" />
+
+      @if (capitulosCarregando) {
+        <app-loading-spinner />
+      } @else if (capitulos.itens.length) {
+        <div class="manga-detalhe__lista">
+          @for (capitulo of capitulos.itens; track capitulo.id) {
+            <a class="manga-detalhe__capitulo" [routerLink]="rotaLeitor(capitulo)">
+              <span class="manga-detalhe__cap-numero">Cap. {{ capitulo.numero }}</span>
+              <span class="manga-detalhe__cap-titulo">{{ capitulo.titulo }}</span>
+              <span class="manga-detalhe__cap-info">
+                {{ capitulo.paginas }} pg · {{ capitulo.idioma }}
+              </span>
+            </a>
+          }
+        </div>
+
+        @if (capitulos.totalPaginas > 1) {
+          <app-paginacao
+            [totalRecords]="capitulos.total"
+            [rows]="tamanho"
+            [pagina]="pagina - 1"
+            (paginaChange)="aoMudarPagina($event)" />
+        }
+      } @else {
+        <app-empty-state
+          icone="pi pi-inbox"
+          mensagem="Nenhum capítulo disponível para este mangá." />
+      }
+    </section>
+  </div>
+}
