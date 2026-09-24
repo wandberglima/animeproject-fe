@@ -1,4 +1,12 @@
-@if (videoUrl) {
+@if (streamUrl) {
+  <div class="video-player">
+    <video
+      #playerVideo
+      class="video-player__video"
+      [attr.src]="streamHls ? null : streamUrl"
+      controls></video>
+  </div>
+} @else if (videoUrl) {
   @if (ehIframe) {
     <div class="video-player">
       <iframe

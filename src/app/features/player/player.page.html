@@ -9,7 +9,10 @@
 } @else if (anime) {
   <div class="player">
     <section class="player__principal">
-      <app-video-player [videoUrl]="episodio?.videoUrl ?? ''" />
+      <app-video-player
+        [videoUrl]="usaStream || streamCarregando ? '' : (episodio?.videoUrl ?? '')"
+        [streamUrl]="usaStream ? urlDoVideo : ''"
+        [streamHls]="ehHls" />
 
       <div class="player__info">
         <h1 class="player__titulo">{{ anime.titulo }}</h1>
@@ -19,6 +22,13 @@
             Temporada {{ episodio.temporada }} ·
             {{ episodio.titulo }}
           </p>
+          @if (streamCarregando) {
+            <p class="player__status"><i class="pi pi-spin pi-spinner"></i> Carregando stream…</p>
+          } @else if (streamIndisponivel) {
+            <p class="player__status">Stream agregado indisponível, usando fonte alternativa.</p>
+          } @else if (stream && !ehHls) {
+            <p class="player__status">Reprodução direta ({{ stream.provedor }}).</p>
+          }
         } @else {
           <p class="player__subtitulo">Episódio {{ numeroParam }} não encontrado para este anime.</p>
         }

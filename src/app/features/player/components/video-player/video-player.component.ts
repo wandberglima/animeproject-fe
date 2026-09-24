@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, ViewChild } from '@angular/core';
+import Hls from 'hls.js';
 
 import { SafeUrlPipe } from '../../../../shared/pipes/safe-url.pipe';
 
@@ -9,8 +10,14 @@ import { SafeUrlPipe } from '../../../../shared/pipes/safe-url.pipe';
   templateUrl: './video-player.component.html',
   styleUrls: ['./video-player.component.scss'],
 })
-export class VideoPlayerComponent {
+export class VideoPlayerComponent implements OnChanges, OnDestroy, AfterViewInit {
   @Input() videoUrl = '';
+  @Input() streamUrl = '';
+  @Input() streamHls = false;
+  @ViewChild('playerVideo') private videoElement?: ElementRef<HTMLVideoElement>;
+
+  private hls?: Hls;
+  private hlsPendente = false;
 
   private readonly fontesIframe = [
     'youtube',
@@ -26,5 +33,61 @@ export class VideoPlayerComponent {
   get ehIframe(): boolean {
     const url = this.videoUrl.toLowerCase();
     return this.fontesIframe.some((fonte) => url.includes(fonte));
+  }
+
+  ngOnChanges(): void {
+    this.programarInicio();
+  }
+
+  ngAfterViewInit(): void {
+    this.programarInicio();
+  }
+
+  ngOnDestroy(): void {
+    this.pararHls();
+  }
+
+  private programarInicio(): void {
+    this.pararHls();
+    if (!this.streamUrl || !this.streamHls) {
+      return;
+    }
+    if (this.videoElement?.nativeElement) {
+      this.iniciarHls(this.videoElement.nativeElement);
+    } else {
+      this.hlsPendente = true;
+    }
+  }
+
+  private iniciarHls(video: HTMLVideoElement): void {
+    if (Hls.isSupported()) {
+      this.hls = new Hls({ enableWorker: true, backBufferLength: 90 });
+      this.hls.loadSource(this.streamUrl);
+      this.hls.attachMedia(video);
+      this.hls.on(Hls.Events.ERROR, (_evento, dados) => {
+        if (dados.fatal) {
+          switch (dados.type) {
+            case Hls.ErrorTypes.NETWORK_ERROR:
+              this.hls?.startLoad();
+              break;
+            case Hls.ErrorTypes.MEDIA_ERROR:
+              this.hls?.recoverMediaError();
+              break;
+            default:
+              this.pararHls();
+          }
+        }
+      });
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = this.streamUrl;
+    }
+  }
+
+  private pararHls(): void {
+    this.hlsPendente = false;
+    if (this.hls) {
+      this.hls.destroy();
+      this.hls = undefined;
+    }
   }
 }

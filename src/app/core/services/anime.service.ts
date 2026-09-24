@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Anime } from '../models/anime.model';
 import { FiltrosAnime, ResultadoPaginado } from '../models/filtros.model';
+import { StreamInfo } from '../models/stream.model';
 
 @Injectable({ providedIn: 'root' })
 export class AnimeService {
@@ -26,5 +27,11 @@ export class AnimeService {
 
   obter(id: number): Observable<Anime> {
     return this.http.get<Anime>(`${environment.apiUrl}/animes/${id}`);
+  }
+
+  obterStream(animeId: number, numero: number): Observable<StreamInfo> {
+    return this.http.get<StreamInfo>(
+      `${environment.apiUrl}/animes/${animeId}/episodios/${numero}/stream`,
+    );
   }
 }
