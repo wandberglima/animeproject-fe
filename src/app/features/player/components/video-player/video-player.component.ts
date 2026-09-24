@@ -52,11 +52,23 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy, AfterViewInit
     if (!this.streamUrl || !this.streamHls) {
       return;
     }
-    if (this.videoElement?.nativeElement) {
-      this.iniciarHls(this.videoElement.nativeElement);
-    } else {
-      this.hlsPendente = true;
+    const tentar = (): boolean => {
+      const elemento = this.videoElement?.nativeElement;
+      if (!elemento) {
+        return false;
+      }
+      this.iniciarHls(elemento);
+      return true;
+    };
+    if (tentar()) {
+      return;
     }
+    this.hlsPendente = true;
+    setTimeout(() => {
+      if (this.hlsPendente) {
+        tentar();
+      }
+    }, 0);
   }
 
   private iniciarHls(video: HTMLVideoElement): void {
