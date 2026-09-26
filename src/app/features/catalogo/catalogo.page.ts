@@ -3,11 +3,13 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { first } from 'rxjs';
 
 import { Anime } from '../../core/models/anime.model';
+import { BuscaExternaItem } from '../../core/models/busca.model';
 import { IDIOMA_LABEL, STATUS_ANIME_LABEL } from '../../core/models/enums';
 import { FiltrosAnime, ResultadoPaginado } from '../../core/models/filtros.model';
 import { GENEROS } from '../../core/models/genero';
 import { AnimeService } from '../../core/services/anime.service';
 import { AnimeCardComponent } from '../../shared/ui/anime-card/anime-card.component';
+import { BuscaExternaCardComponent } from '../../shared/ui/busca-externa-card/busca-externa-card.component';
 import { EmptyStateComponent } from '../../shared/ui/empty-state/empty-state.component';
 import { LoadingSpinnerComponent } from '../../shared/ui/loading-spinner/loading-spinner.component';
 import { EventoPagina, PaginacaoComponent } from '../../shared/ui/paginacao/paginacao.component';
@@ -21,6 +23,7 @@ import { FiltrosBarraComponent } from './components/filtros-barra/filtros-barra.
     FiltrosBarraComponent,
     SectionHeaderComponent,
     AnimeCardComponent,
+    BuscaExternaCardComponent,
     PaginacaoComponent,
     LoadingSpinnerComponent,
     EmptyStateComponent,
@@ -31,9 +34,11 @@ import { FiltrosBarraComponent } from './components/filtros-barra/filtros-barra.
 export class CatalogoPageComponent implements OnInit, OnDestroy {
   carregando = true;
   erro = false;
+  buscaExternaErro = false;
 
   filtros: FiltrosAnime = { pagina: 1, tamanho: 24 };
   resultado: ResultadoPaginado<Anime> = { itens: [], total: 0, pagina: 1, totalPaginas: 0 };
+  externos: BuscaExternaItem[] = [];
 
   private paramsSubscription?: { unsubscribe(): void };
 
@@ -66,6 +71,12 @@ export class CatalogoPageComponent implements OnInit, OnDestroy {
     return partes.length ? `Filtrando por: ${partes.join(' · ')}` : 'Todos os animes do catálogo';
   }
 
+  get subtituloExterno(): string {
+    return this.externos.length
+      ? `Resultados de ${this.externos.length} títulos externos para "${this.filtros.busca}"`
+      : '';
+  }
+
   private emFiltros(params: Params): FiltrosAnime {
     return {
       busca: params['q'] ?? undefined,
@@ -94,6 +105,27 @@ export class CatalogoPageComponent implements OnInit, OnDestroy {
         error: () => {
           this.carregando = false;
           this.erro = true;
+        },
+      });
+    this.carregarBuscaExterna();
+  }
+
+  private carregarBuscaExterna(): void {
+    this.externos = [];
+    this.buscaExternaErro = false;
+    const termo = this.filtros.busca;
+    if (!termo) {
+      return;
+    }
+    this.animeService
+      .buscarAgregado(termo, 6)
+      .pipe(first())
+      .subscribe({
+        next: (resultado) => {
+          this.externos = resultado.externos ?? [];
+        },
+        error: () => {
+          this.buscaExternaErro = true;
         },
       });
   }

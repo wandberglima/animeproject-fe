@@ -1,0 +1,22 @@
+@if (item) {
+  <article class="externa-card">
+    <a class="externa-card__link" [routerLink]="rota">
+      <div class="externa-card__poster">
+        @if (item.capa) {
+          <img [src]="item.capa" [alt]="item.titulo" loading="lazy" />
+        } @else {
+          <div class="externa-card__fallback"><i class="pi pi-video"></i></div>
+        }
+        <div class="externa-card__overlay">
+          <span class="externa-card__play"><i class="pi pi-play"></i></span>
+        </div>
+      </div>
+      <div class="externa-card__corpo">
+        <h3 class="externa-card__titulo">{{ item.titulo }}</h3>
+        <span class="externa-card__provedor">
+          {{ item.provider }}{{ item.ano ? ' · ' + item.ano : '' }}
+        </span>
+      </div>
+    </a>
+  </article>
+}

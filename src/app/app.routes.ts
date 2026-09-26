@@ -44,6 +44,14 @@ export const routes: Routes = [
     title: 'Assistir',
   },
   {
+    path: 'assistir-externo/:provider/:mediaId',
+    loadComponent: () =>
+      import('./features/assistir-externo/assistir-externo.page').then(
+        (m) => m.AssistirExternoPageComponent,
+      ),
+    title: 'Assistir',
+  },
+  {
     path: 'login',
     loadComponent: () => import('./features/login/login.page').then((m) => m.LoginPageComponent),
     title: 'Entrar',

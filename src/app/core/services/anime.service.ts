@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { Anime } from '../models/anime.model';
+import { BuscaAgregada } from '../models/busca.model';
 import { FiltrosAnime, ResultadoPaginado } from '../models/filtros.model';
 import { StreamInfo } from '../models/stream.model';
 
@@ -33,5 +34,16 @@ export class AnimeService {
     return this.http.get<StreamInfo>(
       `${environment.apiUrl}/animes/${animeId}/episodios/${numero}/stream`,
     );
+  }
+
+  buscarAgregado(q: string, tamanho?: number): Observable<BuscaAgregada> {
+    let params = new HttpParams().set('q', q);
+    if (tamanho !== undefined) params = params.set('tamanho', String(tamanho));
+    return this.http.get<BuscaAgregada>(`${environment.apiUrl}/busca`, { params });
+  }
+
+  obterStreamExterno(provider: string, mediaId: string): Observable<StreamInfo> {
+    let params = new HttpParams().set('provider', provider).set('mediaId', mediaId);
+    return this.http.get<StreamInfo>(`${environment.apiUrl}/stream/externo`, { params });
   }
 }

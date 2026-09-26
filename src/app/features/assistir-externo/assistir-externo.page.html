@@ -1,0 +1,26 @@
+@if (carregando) {
+  <app-loading-spinner />
+} @else if (streamIndisponivel) {
+  <app-empty-state
+    icone="pi pi-wifi"
+    mensagem="Não foi possível carregar o stream deste título. Tente novamente mais tarde.">
+    <button class="btn-tentar" (click)="carregar()">Tentar novamente</button>
+  </app-empty-state>
+} @else if (stream) {
+  <div class="externo">
+    <app-video-player
+      [videoUrl]="''"
+      [streamUrl]="urlDoVideo"
+      [streamHls]="ehHls" />
+
+    <div class="externo__info">
+      <h1 class="externo__titulo">{{ stream.provedor }}</h1>
+      <p class="externo__subtitulo">
+        Reproduzindo do provedor {{ stream.provedor }}
+        @if (!ehHls) {
+          · reprodução direta
+        }
+      </p>
+    </div>
+  </div>
+}

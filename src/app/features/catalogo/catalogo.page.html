@@ -38,4 +38,19 @@
       icone="pi pi-search"
       mensagem="Nenhum anime encontrado com os filtros selecionados." />
   }
+
+  @if (!carregando && !erro && externos.length) {
+    <app-section-header titulo="Disponível em outros provedores" [subtitulo]="subtituloExterno" />
+    <div class="catalogo__grade">
+      @for (externo of externos; track externo.provider + externo.mediaId) {
+        <app-busca-externa-card [item]="externo" />
+      }
+    </div>
+  }
+
+  @if (!carregando && !erro && buscaExternaErro && filtros.busca) {
+    <p class="catalogo__contagem">
+      Não foi possível consultar os provedores externos agora.
+    </p>
+  }
 </div>
