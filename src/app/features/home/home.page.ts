@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { first } from 'rxjs';
 
+import { Anime } from '../../core/models/anime.model';
+import { StatusAnime } from '../../core/models/enums';
 import { GENEROS } from '../../core/models/genero';
 import { HomeData } from '../../core/models/home.model';
 import { HomeService } from '../../core/services/home.service';
@@ -35,6 +37,12 @@ export class HomePageComponent implements OnInit {
   carregando = true;
   erro = false;
   dados?: HomeData;
+
+  get emLancamento(): Anime[] {
+    return this.dados
+      ? this.dados.recentes.filter((a) => a.status === StatusAnime.EM_LANCAMENTO)
+      : [];
+  }
 
   constructor(private homeService: HomeService) {}
 

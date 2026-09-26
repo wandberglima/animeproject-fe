@@ -14,6 +14,14 @@
 
     <section class="home__secao">
       <app-section-header titulo="Últimos Episódios" link="/animes" />
+      @if (emLancamento.length) {
+        <app-section-header titulo="Em lançamento agora" />
+        <div class="home__linha">
+          @for (anime of emLancamento; track anime.id) {
+            <app-anime-card [anime]="anime" />
+          }
+        </div>
+      }
       @if (dados.ultimosEpisodios.length) {
         <div class="home__grade--episodios">
           @for (episodio of dados.ultimosEpisodios; track episodio.episodio.id) {
