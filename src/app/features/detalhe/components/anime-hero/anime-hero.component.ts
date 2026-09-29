@@ -3,7 +3,6 @@ import { RouterLink } from '@angular/router';
 
 import { Anime } from '../../../../core/models/anime.model';
 import { IDIOMA_LABEL, STATUS_ANIME_LABEL } from '../../../../core/models/enums';
-import { GENEROS } from '../../../../core/models/genero';
 import { RatingBadgeComponent } from '../../../../shared/ui/rating-badge/rating-badge.component';
 import { FavoritoButtonComponent } from '../favorito-button/favorito-button.component';
 
@@ -17,7 +16,6 @@ import { FavoritoButtonComponent } from '../favorito-button/favorito-button.comp
 export class AnimeHeroComponent {
   readonly statusLabel = STATUS_ANIME_LABEL;
   readonly idiomaLabel = IDIOMA_LABEL;
-  readonly generos = GENEROS;
 
   @Input() anime!: Anime;
   @Input() favoritado = false;

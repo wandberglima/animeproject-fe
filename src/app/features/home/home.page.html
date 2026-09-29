@@ -14,14 +14,6 @@
 
     <section class="home__secao">
       <app-section-header titulo="Últimos Episódios" link="/animes" />
-      @if (emLancamento.length) {
-        <app-section-header titulo="Em lançamento agora" />
-        <div class="home__linha">
-          @for (anime of emLancamento; track anime.id) {
-            <app-anime-card [anime]="anime" />
-          }
-        </div>
-      }
       @if (dados.ultimosEpisodios.length) {
         <div class="home__grade--episodios">
           @for (episodio of dados.ultimosEpisodios; track episodio.episodio.id) {
@@ -34,55 +26,51 @@
     </section>
 
     <section class="home__secao">
-      <app-section-header titulo="Animes Recentes" link="/animes" />
-      @if (dados.recentes.length) {
+      <app-section-header
+        titulo="Animes com Episódios Recentes"
+        link="/animes"
+        [queryParams]="{ ordenacao: 'recentes' }"
+        linkLabel="Ver todos" />
+      @if (dados.ultimosLancamentos.length) {
         <div class="home__linha">
-          @for (anime of dados.recentes; track anime.id) {
+          @for (anime of dados.ultimosLancamentos; track anime.id) {
             <app-anime-card [anime]="anime" />
           }
         </div>
       } @else {
-        <app-empty-state mensagem="Nenhum anime cadastrado ainda." />
+        <app-empty-state mensagem="Nenhum anime com episódios cadastrado ainda." />
       }
     </section>
 
-    <section class="home__secao home__secao--grid">
-      <div class="home__populares">
-        <app-section-header
-          titulo="Populares"
-          link="/animes"
-          [queryParams]="{ ordenacao: 'avaliacao' }"
-          linkLabel="Ver ranking" />
-        @if (dados.populares.length) {
-          <ol class="populares">
-            @for (anime of dados.populares; track anime.id; let i = $index) {
-              <li class="populares__item">
-                <span class="populares__rank">{{ i + 1 }}</span>
-                <a class="populares__link" [routerLink]="['/animes', anime.id]">
-                  <img class="populares__poster" [src]="anime.capaUrl" [alt]="anime.titulo" loading="lazy" />
-                  <div class="populares__info">
-                    <p class="populares__titulo">{{ anime.titulo }}</p>
-                    <app-rating-badge [nota]="anime.nota" />
-                  </div>
-                </a>
-              </li>
-            }
-          </ol>
-        } @else {
-          <app-empty-state mensagem="Nenhum anime avaliado ainda." />
-        }
-      </div>
-
-      <aside class="home-generos">
-        <app-section-header titulo="Gêneros" />
-        <div class="home-generos__grid">
-          @for (genero of generos; track genero.id) {
-            <a class="home-generos__item" [routerLink]="['/animes']" [queryParams]="{ genero: genero.id }">
-              {{ genero.nome }}
+    <section class="home__secao">
+      <app-section-header
+        titulo="Mais Votados"
+        link="/animes"
+        [queryParams]="{ ordenacao: 'popularidade' }"
+        linkLabel="Ver ranking" />
+      @if (dados.populares.length) {
+        <div class="ranking" role="list" aria-label="Ranking dos animes mais votados">
+          @for (anime of dados.populares; track anime.id; let i = $index) {
+            <a
+              class="ranking__item"
+              role="listitem"
+              [routerLink]="['/animes', anime.id]">
+              <span class="ranking__posicao">{{ i + 1 }}</span>
+              <div class="ranking__poster">
+                <img [src]="anime.capaUrl" [alt]="anime.titulo" loading="lazy" />
+                <span class="ranking__nota">{{ anime.nota | number: '1.1-1' }}</span>
+              </div>
+              <p class="ranking__titulo">{{ anime.titulo }}</p>
+              <p class="ranking__votos">
+                <i class="pi pi-thumbs-up"></i>
+                {{ (anime.votos || 0) | number }} votos
+              </p>
             </a>
           }
         </div>
-      </aside>
+      } @else {
+        <app-empty-state mensagem="Nenhum anime avaliado ainda." />
+      }
     </section>
   </div>
 }

@@ -27,7 +27,7 @@ import { SiteLogoComponent } from '../../ui/site-logo/site-logo.component';
 export class SiteHeaderComponent implements OnInit, OnDestroy {
   usuario: Usuario | null = null;
 
-  generoSelecionado: string | null = null;
+  generosSelecionados: string[] = [];
   itensMobile: MenuItem[] = [];
 
   private authSubscription?: { unsubscribe(): void };
@@ -45,20 +45,6 @@ export class SiteHeaderComponent implements OnInit, OnDestroy {
       { label: 'Início', icon: 'pi pi-home', routerLink: '/' },
       { label: 'Lista de Animes', icon: 'pi pi-th-large', routerLink: '/animes' },
       { label: 'Mangás', icon: 'pi pi-book', routerLink: '/mangas' },
-      {
-        label: 'Legendado',
-        icon: 'pi pi-closed-captioning',
-        routerLink: '/animes',
-        queryParams: { idioma: 'LEGENDADO' },
-      },
-      {
-        label: 'Dublado',
-        icon: 'pi pi-mic',
-        routerLink: '/animes',
-        queryParams: { idioma: 'DUBLADO' },
-      },
-      { label: 'Episódios', icon: 'pi pi-play', routerLink: '/' },
-      { label: 'Gêneros', icon: 'pi pi-tag', routerLink: '/animes' },
     ];
   }
 
@@ -70,10 +56,10 @@ export class SiteHeaderComponent implements OnInit, OnDestroy {
     this.router.navigate(['/animes'], { queryParams: { q: termo || null } });
   }
 
-  aoFiltrarGenero(genero: string | null): void {
-    this.generoSelecionado = genero;
+  aoFiltrarGenero(generos: string[]): void {
+    this.generosSelecionados = generos;
     this.router.navigate(['/animes'], {
-      queryParams: { genero: genero ?? null },
+      queryParams: { genero: generos.length ? generos : null },
       queryParamsHandling: 'merge',
     });
   }

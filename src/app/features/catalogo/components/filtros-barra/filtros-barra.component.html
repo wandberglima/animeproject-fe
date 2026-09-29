@@ -4,7 +4,12 @@
       <app-pesquisa-input [termo]="busca" placeholder="Buscar anime..." (buscar)="aoBuscar($event)" />
     </div>
 
-    <app-select-genero [genero]="generoSelecionado" (generoChange)="aoSelecionarGenero($event)" />
+    <app-select-genero
+      mode="multiple"
+      [maxSelectedLabels]="2"
+      placeholder="Gêneros"
+      [generos]="generosSelecionados"
+      (generosChange)="aoSelecionarGenero($event)" />
 
     <p-select
       [options]="statusOpcoes"
@@ -27,7 +32,7 @@
       (ngModelChange)="aoSelecionarIdioma($event)" />
 
     <p-select
-      [options]="anos"
+      [options]="(anos$ | async) ?? []"
       [showClear]="true"
       placeholder="Ano"
       appendTo="body"
@@ -41,7 +46,6 @@
       optionLabel="nome"
       optionValue="id"
       placeholder="Ordenar por"
-      [showClear]="true"
       appendTo="body"
       [(ngModel)]="ordenacaoSelecionada"
       (ngModelChange)="aoSelecionarOrdenacao($event)" />
@@ -57,6 +61,13 @@
   </div>
 
   <div class="filtros__letras">
+    <button
+      type="button"
+      class="filtros__letra filtros__letra--todos"
+      [class.filtros__letra--ativa]="!letraSelecionada"
+      (click)="aoSelecionarLetra('')">
+      Todos
+    </button>
     @for (letra of letras; track letra) {
       <button
         type="button"

@@ -49,3 +49,12 @@
   border-color: var(--primaria);
   color: var(--texto-contraste);
 }
+
+.filtros__letra--todos {
+  width: auto;
+  padding: 0 0.7rem;
+}
+
+:host ::ng-deep .filtros app-select-genero {
+  min-width: 15rem;
+}

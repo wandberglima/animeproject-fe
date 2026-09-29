@@ -1,10 +1,12 @@
 <div class="select-genero">
-  <p-select
-    [options]="generos"
-    optionLabel="nome"
-    optionValue="id"
-    [ngModel]="genero"
+  <p-multiselect
+    [options]="(generos$ | async) ?? []"
+    [ngModel]="generos"
     (ngModelChange)="aoSelecionar($event)"
     [placeholder]="placeholder"
-    [showClear]="true" />
+    optionLabel="nome"
+    optionValue="id"
+    [maxSelectedLabels]="maxSelectedLabels"
+    [showClear]="multiplos"
+    appendTo="body" />
 </div>

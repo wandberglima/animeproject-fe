@@ -1,12 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { first } from 'rxjs';
 
 import { Anime } from '../../core/models/anime.model';
 import { BuscaExternaItem } from '../../core/models/busca.model';
 import { IDIOMA_LABEL, STATUS_ANIME_LABEL } from '../../core/models/enums';
-import { FiltrosAnime, ResultadoPaginado } from '../../core/models/filtros.model';
-import { GENEROS } from '../../core/models/genero';
+import { FiltrosAnime, ORDENACAO_PADRAO, ResultadoPaginado } from '../../core/models/filtros.model';
+import { GeneroFiltro } from '../../core/models/genero';
 import { AnimeService } from '../../core/services/anime.service';
 import { AnimeCardComponent } from '../../shared/ui/anime-card/anime-card.component';
 import { BuscaExternaCardComponent } from '../../shared/ui/busca-externa-card/busca-externa-card.component';
@@ -15,6 +15,8 @@ import { LoadingSpinnerComponent } from '../../shared/ui/loading-spinner/loading
 import { EventoPagina, PaginacaoComponent } from '../../shared/ui/paginacao/paginacao.component';
 import { SectionHeaderComponent } from '../../shared/ui/section-header/section-header.component';
 import { FiltrosBarraComponent } from './components/filtros-barra/filtros-barra.component';
+
+const TAMANHO_PADRAO = 24;
 
 @Component({
   selector: 'app-catalogo-page',
@@ -32,11 +34,15 @@ import { FiltrosBarraComponent } from './components/filtros-barra/filtros-barra.
   styleUrls: ['./catalogo.page.scss'],
 })
 export class CatalogoPageComponent implements OnInit, OnDestroy {
+  private readonly animeService = inject(AnimeService);
+
   carregando = true;
   erro = false;
   buscaExternaErro = false;
 
-  filtros: FiltrosAnime = { pagina: 1, tamanho: 24 };
+  generosCatalogo: GeneroFiltro[] = [];
+
+  filtros: FiltrosAnime = { pagina: 1, tamanho: TAMANHO_PADRAO, ordenacao: ORDENACAO_PADRAO };
   resultado: ResultadoPaginado<Anime> = { itens: [], total: 0, pagina: 1, totalPaginas: 0 };
   externos: BuscaExternaItem[] = [];
 
@@ -45,10 +51,10 @@ export class CatalogoPageComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private animeService: AnimeService,
   ) {}
 
   ngOnInit(): void {
+    this.animeService.generos$.pipe(first()).subscribe((generos) => (this.generosCatalogo = generos));
     this.paramsSubscription = this.route.queryParams.subscribe((params) => {
       this.filtros = this.emFiltros(params);
       this.carregar();
@@ -63,8 +69,9 @@ export class CatalogoPageComponent implements OnInit, OnDestroy {
     const partes: string[] = [];
     if (this.filtros.busca) partes.push(`busca "${this.filtros.busca}"`);
     if (this.filtros.letra) partes.push(`letra ${this.filtros.letra}`);
-    const genero = this.filtros.genero ? GENEROS.find((g) => g.id === this.filtros.genero) : undefined;
-    if (genero) partes.push(`gênero ${genero.nome}`);
+    for (const nome of this.nomesDosGeneros()) {
+      partes.push(`gênero ${nome}`);
+    }
     if (this.filtros.idioma) partes.push(IDIOMA_LABEL[this.filtros.idioma]);
     if (this.filtros.status) partes.push(STATUS_ANIME_LABEL[this.filtros.status]);
     if (this.filtros.ano) partes.push(`ano ${this.filtros.ano}`);
@@ -77,18 +84,35 @@ export class CatalogoPageComponent implements OnInit, OnDestroy {
       : '';
   }
 
+  private nomesDosGeneros(): string[] {
+    return (this.filtros.generos ?? [])
+      .map((id) => this.generosCatalogo.find((g) => g.id === id)?.nome)
+      .filter((nome): nome is string => !!nome);
+  }
+
   private emFiltros(params: Params): FiltrosAnime {
+    const generos = this.paramGeneros(params['genero']);
     return {
       busca: params['q'] ?? undefined,
       letra: params['letra'] ?? undefined,
-      genero: params['genero'] ?? undefined,
+      generos: generos.length ? generos : undefined,
       idioma: params['idioma'] ?? undefined,
       status: params['status'] ?? undefined,
       ano: params['ano'] ? Number(params['ano']) : undefined,
-      ordenacao: params['ordenacao'] ?? undefined,
+      ordenacao: params['ordenacao'] ?? ORDENACAO_PADRAO,
       pagina: params['pagina'] ? Number(params['pagina']) : 1,
-      tamanho: 24,
+      tamanho: params['tamanho'] ? Number(params['tamanho']) : TAMANHO_PADRAO,
     };
+  }
+
+  private paramGeneros(valor: unknown): string[] {
+    if (Array.isArray(valor)) {
+      return valor.flatMap((v) => String(v).split(','));
+    }
+    if (typeof valor === 'string') {
+      return valor.split(',');
+    }
+    return [];
   }
 
   carregar(): void {
@@ -146,12 +170,13 @@ export class CatalogoPageComponent implements OnInit, OnDestroy {
     const params: Params = {};
     if (filtros.busca) params['q'] = filtros.busca;
     if (filtros.letra) params['letra'] = filtros.letra;
-    if (filtros.genero) params['genero'] = filtros.genero;
+    if (filtros.generos?.length) params['genero'] = filtros.generos;
     if (filtros.idioma) params['idioma'] = filtros.idioma;
     if (filtros.status) params['status'] = filtros.status;
     if (filtros.ano) params['ano'] = String(filtros.ano);
-    if (filtros.ordenacao) params['ordenacao'] = filtros.ordenacao;
+    if (filtros.ordenacao && filtros.ordenacao !== ORDENACAO_PADRAO) params['ordenacao'] = filtros.ordenacao;
     if (filtros.pagina && filtros.pagina > 1) params['pagina'] = String(filtros.pagina);
+    if (filtros.tamanho && filtros.tamanho !== TAMANHO_PADRAO) params['tamanho'] = String(filtros.tamanho);
     this.router.navigate(['/animes'], { queryParams: params });
   }
 }

@@ -1,22 +1,36 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { Anime } from '../models/anime.model';
 import { BuscaAgregada } from '../models/busca.model';
 import { FiltrosAnime, ResultadoPaginado } from '../models/filtros.model';
+import { GeneroFiltro } from '../models/genero';
 import { StreamInfo } from '../models/stream.model';
 
 @Injectable({ providedIn: 'root' })
 export class AnimeService {
-  constructor(private http: HttpClient) {}
+  /** Anos e generos vem do servidor para o filtro nunca oferecer valores sem resultado. */
+  readonly anos$: Observable<number[]>;
+  readonly generos$: Observable<GeneroFiltro[]>;
+
+  constructor(private http: HttpClient) {
+    this.anos$ = this.http
+      .get<number[]>(`${environment.apiUrl}/animes/anos`)
+      .pipe(shareReplay({ bufferSize: 1, refCount: false }));
+    this.generos$ = this.http
+      .get<GeneroFiltro[]>(`${environment.apiUrl}/animes/generos`)
+      .pipe(shareReplay({ bufferSize: 1, refCount: false }));
+  }
 
   listar(filtros: FiltrosAnime): Observable<ResultadoPaginado<Anime>> {
     let params = new HttpParams();
     if (filtros.busca) params = params.set('busca', filtros.busca);
     if (filtros.letra) params = params.set('letra', filtros.letra);
-    if (filtros.genero) params = params.set('genero', filtros.genero);
+    for (const genero of filtros.generos ?? []) {
+      params = params.append('genero', genero);
+    }
     if (filtros.idioma) params = params.set('idioma', filtros.idioma);
     if (filtros.status) params = params.set('status', filtros.status);
     if (filtros.ano !== undefined) params = params.set('ano', String(filtros.ano));

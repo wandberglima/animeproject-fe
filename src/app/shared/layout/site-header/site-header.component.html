@@ -15,25 +15,16 @@
       <a routerLink="/mangas" routerLinkActive="site-header__link--ativo" class="site-header__link">
         Mangás
       </a>
-      <a
-        routerLink="/animes"
-        [queryParams]="{ idioma: 'LEGENDADO' }"
-        class="site-header__link">Legendado</a
-      >
-      <a
-        routerLink="/animes"
-        [queryParams]="{ idioma: 'DUBLADO' }"
-        class="site-header__link">Dublado</a
-      >
-      <a routerLink="/" routerLinkActive="site-header__link--ativo" class="site-header__link">
-        Episódios
-      </a>
-      <a routerLink="/animes" class="site-header__link">Gêneros</a>
     </nav>
 
     <div class="site-header__filtros">
       <app-pesquisa-input (buscar)="aoBuscar($event)" />
-      <app-select-genero [genero]="generoSelecionado" (generoChange)="aoFiltrarGenero($event)" />
+      <app-select-genero
+        mode="multiple"
+        [maxSelectedLabels]="2"
+        placeholder="Gêneros"
+        [generos]="generosSelecionados"
+        (generosChange)="aoFiltrarGenero($event)" />
     </div>
 
     <div class="site-header__acoes">

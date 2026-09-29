@@ -3,7 +3,7 @@ import { Idioma, StatusAnime } from './enums';
 export interface FiltrosAnime {
   busca?: string;
   letra?: string;
-  genero?: string;
+  generos?: string[];
   idioma?: Idioma;
   status?: StatusAnime;
   ano?: number;
@@ -18,3 +18,19 @@ export interface ResultadoPaginado<T> {
   pagina: number;
   totalPaginas: number;
 }
+
+/** Ordenacao padrao da lista: alfabetica. */
+export const ORDENACAO_PADRAO = 'nome';
+
+export interface OpcaoOrdenacao {
+  id: string;
+  nome: string;
+}
+
+export const ORDENACOES: OpcaoOrdenacao[] = [
+  { id: ORDENACAO_PADRAO, nome: 'Nome (A-Z)' },
+  { id: 'popularidade', nome: 'Mais votados' },
+  { id: 'avaliacao', nome: 'Melhor avaliados' },
+  { id: 'recentes', nome: 'Mais recentes' },
+  { id: 'ano', nome: 'Ano (mais novo)' },
+];

@@ -16,7 +16,9 @@
 
     @if (anime.temporadas.length) {
       <section class="detalhe__secao">
-        <app-section-header titulo="Episódios" [subtitulo]="anime.temporadas.length + ' temporada(s)'" />
+        <app-section-header
+          titulo="Episódios"
+          [subtitulo]="anime.temporadas.length + ' temporada(s) por ano de exibição'" />
         <app-episodio-lista [animeId]="anime.id" [temporadas]="anime.temporadas" />
       </section>
     } @else {

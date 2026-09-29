@@ -8,6 +8,6 @@ export interface DestaqueHome {
 export interface HomeData {
   destaques: DestaqueHome[];
   ultimosEpisodios: EpisodioRecente[];
-  recentes: Anime[];
+  ultimosLancamentos: Anime[];
   populares: Anime[];
 }

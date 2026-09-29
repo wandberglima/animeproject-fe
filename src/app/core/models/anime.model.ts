@@ -17,14 +17,16 @@ export interface Anime {
   sinopse: string;
   generos: Genero[];
   nota: number;
+  votos?: number;
   ano: number;
+  dataLancamento?: string;
   status: StatusAnime;
   idioma: Idioma;
   temporadas: Temporada[];
 }
 
 export interface EpisodioRecente {
-  anime: Pick<Anime, 'id' | 'titulo' | 'capaUrl' | 'nota'>;
+  anime: Pick<Anime, 'id' | 'titulo' | 'capaUrl' | 'nota' | 'votos'>;
   episodio: Pick<
     Episodio,
     'id' | 'animeId' | 'temporada' | 'numero' | 'titulo' | 'dataLancamento' | 'idioma'

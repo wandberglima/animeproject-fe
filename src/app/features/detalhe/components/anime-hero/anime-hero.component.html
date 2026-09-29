@@ -18,7 +18,7 @@
 
         <div class="detalhe-hero__generos">
           @for (genero of anime.generos; track genero.id) {
-            <a class="detalhe-hero__genero" [routerLink]="['/animes']" [queryParams]="{ genero: genero.id }">
+            <a class="detalhe-hero__genero" [routerLink]="['/animes']" [queryParams]="{ genero: [genero.id] }">
               {{ genero.nome }}
             </a>
           }
