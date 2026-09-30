@@ -22,6 +22,30 @@
             Temporada {{ episodio.temporada }} ·
             {{ episodio.titulo }}
           </p>
+          <div class="player__idiomas">
+            <button
+              type="button"
+              class="player__idioma"
+              [class.player__idioma--ativo]="idioma === Idioma.LEGENDADO"
+              (click)="alternarIdioma()"
+              [disabled]="streamCarregando">
+              Legendado
+            </button>
+            <button
+              type="button"
+              class="player__idioma"
+              [class.player__idioma--ativo]="idioma === Idioma.DUBLADO"
+              (click)="alternarIdioma()"
+              [disabled]="streamCarregando">
+              Dublado
+              @if (episodio.dublado) {
+                <i class="pi pi-check" title="Dublagem confirmada"></i>
+              }
+            </button>
+          </div>
+          @if (avisoIdioma) {
+            <p class="player__aviso">{{ avisoIdioma }}</p>
+          }
           @if (streamCarregando) {
             <p class="player__status"><i class="pi pi-spin pi-spinner"></i> Carregando stream…</p>
           } @else if (streamIndisponivel) {

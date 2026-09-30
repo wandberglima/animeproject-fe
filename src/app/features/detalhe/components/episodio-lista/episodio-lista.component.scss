@@ -110,7 +110,18 @@
 .episodios__item-data {
   color: var(--texto-suave);
   font-size: 0.72rem;
-}
+  }
+
+.episodios__selo {
+  align-self: flex-start;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--primaria) 22%, transparent);
+  color: var(--primaria);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  }
 
 .episodios__vazio {
   margin: 0;

@@ -22,6 +22,8 @@ export interface Anime {
   dataLancamento?: string;
   status: StatusAnime;
   idioma: Idioma;
+  /** TV, MOVIE, OVA, ONA, SPECIAL... do AniList. */
+  formato?: string;
   temporadas: Temporada[];
 }
 

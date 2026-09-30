@@ -34,6 +34,9 @@
                   </span>
                   <span class="episodios__item-texto">
                     <span class="episodios__item-titulo">{{ episodio.titulo }}</span>
+                    @if (episodio.dublado) {
+                      <span class="episodios__selo" title="Dublagem disponível">DUB</span>
+                    }
                     @if (episodio.dataLancamento) {
                       <span class="episodios__item-data">{{ episodio.dataLancamento | date: 'dd/MM/yyyy' }}</span>
                     }

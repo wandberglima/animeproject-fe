@@ -30,6 +30,53 @@
   font-size: 0.9rem;
 }
 
+.player__idiomas {
+  display: inline-flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  margin-top: 0.5rem;
+  border-radius: 999px;
+  background: var(--superficie-1);
+  border: 1px solid var(--borda);
+  align-self: flex-start;
+}
+
+.player__idioma {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.95rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--texto-suave);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.player__idioma:hover:not(:disabled) {
+  color: var(--texto);
+}
+
+.player__idioma--ativo {
+  background: var(--primaria);
+  color: var(--texto-contraste);
+}
+
+.player__idioma:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.player__aviso {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--texto-suave);
+}
+
 .player__navegacao {
   display: flex;
   align-items: center;

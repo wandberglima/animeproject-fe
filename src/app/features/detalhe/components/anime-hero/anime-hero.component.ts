@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { Anime } from '../../../../core/models/anime.model';
-import { IDIOMA_LABEL, STATUS_ANIME_LABEL } from '../../../../core/models/enums';
+import { FORMATO_LABEL, IDIOMA_LABEL, STATUS_ANIME_LABEL } from '../../../../core/models/enums';
 import { RatingBadgeComponent } from '../../../../shared/ui/rating-badge/rating-badge.component';
 import { FavoritoButtonComponent } from '../favorito-button/favorito-button.component';
 
@@ -25,6 +25,16 @@ export class AnimeHeroComponent {
 
   get fundo(): string {
     return `url('${this.anime.bannerUrl || this.anime.capaUrl}')`;
+  }
+
+  /** AniList devolve formato em sigla (TV, MOVIE, OVA, ONA, SPECIAL, TV_SHORT). */
+  get formatoLabel(): string | undefined {
+    const formato = this.anime.formato;
+    return formato ? FORMATO_LABEL[formato] ?? formato : undefined;
+  }
+
+  get temDublagem(): boolean {
+    return this.anime.temporadas.some((t) => t.episodios.some((e) => e.dublado));
   }
 
   get primeiroEpisodioNumero(): number {

@@ -7,6 +7,7 @@ import { Anime } from '../models/anime.model';
 import { BuscaAgregada } from '../models/busca.model';
 import { FiltrosAnime, ResultadoPaginado } from '../models/filtros.model';
 import { GeneroFiltro } from '../models/genero';
+import { Idioma } from '../models/enums';
 import { StreamInfo } from '../models/stream.model';
 
 @Injectable({ providedIn: 'root' })
@@ -44,9 +45,14 @@ export class AnimeService {
     return this.http.get<Anime>(`${environment.apiUrl}/animes/${id}`);
   }
 
-  obterStream(animeId: number, numero: number): Observable<StreamInfo> {
+  obterStream(animeId: number, numero: number, linguagem?: Idioma): Observable<StreamInfo> {
+    let params = new HttpParams();
+    // A API espera os codigos do scraper (sub/dub), nao os nomes do enum (LEGENDADO/DUBLADO).
+    // Sem esta traducao o botao "Dublado" voltava com o episode legendado.
+    if (linguagem) params = params.set('linguagem', linguagem === Idioma.DUBLADO ? 'dub' : 'sub');
     return this.http.get<StreamInfo>(
       `${environment.apiUrl}/animes/${animeId}/episodios/${numero}/stream`,
+      { params },
     );
   }
 

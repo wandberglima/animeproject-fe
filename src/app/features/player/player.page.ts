@@ -3,6 +3,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { first } from 'rxjs';
 
 import { Anime } from '../../core/models/anime.model';
+import { Idioma } from '../../core/models/enums';
 import { Episodio } from '../../core/models/episodio.model';
 import { StreamInfo } from '../../core/models/stream.model';
 import { AnimeService } from '../../core/services/anime.service';
@@ -26,6 +27,8 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./player.page.scss'],
 })
 export class PlayerPageComponent implements OnInit, OnDestroy {
+  readonly Idioma = Idioma;
+
   carregando = true;
   erro = false;
   anime?: Anime;
@@ -33,6 +36,8 @@ export class PlayerPageComponent implements OnInit, OnDestroy {
   stream?: StreamInfo;
   streamCarregando = false;
   streamIndisponivel = false;
+  idioma: Idioma = Idioma.LEGENDADO;
+  avisoIdioma?: string;
 
   private animeId = 0;
   private numeroAtual = 0;
@@ -102,19 +107,36 @@ export class PlayerPageComponent implements OnInit, OnDestroy {
     this.stream = undefined;
     this.streamCarregando = true;
     this.streamIndisponivel = false;
+    this.avisoIdioma = undefined;
     this.animeService
-      .obterStream(this.animeId, this.numeroAtual)
+      .obterStream(this.animeId, this.numeroAtual, this.idioma)
       .pipe(first())
       .subscribe({
         next: (stream) => {
           this.stream = stream;
           this.streamCarregando = false;
+          // O backend cai para a legenda quando o provider nao tem dublagem. A resposta diz o que
+          // foi entregue, e sem esta checagem o botao "Dublado" tocava legenda sem avisar.
+          if (this.idioma === Idioma.DUBLADO && stream.idioma === 'sub') {
+            this.avisoIdioma = 'Dublagem indisponível neste servidor; tocando a versão legendada.';
+          } else if (this.idioma === Idioma.DUBLADO && !stream.idioma) {
+            this.avisoIdioma = 'Servidor não informou o idioma entregue.';
+          }
         },
         error: () => {
           this.streamCarregando = false;
           this.streamIndisponivel = true;
         },
       });
+  }
+
+  /** So troca o idioma quando existe dub; o backend cai para a legenda sozinho se nao houver. */
+  alternarIdioma(): void {
+    this.idioma = this.idioma === Idioma.LEGENDADO ? Idioma.DUBLADO : Idioma.LEGENDADO;
+    if (this.idioma === Idioma.DUBLADO && !this.episodio?.dublado) {
+      this.avisoIdioma = 'Este episódio não consta como dublado; o servidor tentará assim mesmo.';
+    }
+    this.carregarStream();
   }
 
   private absoluto(url: string): string {

@@ -10,4 +10,6 @@ export interface StreamInfo {
   qualidade?: string;
   legendas?: LegendaStream[];
   provedor?: string;
+  /** Idioma realmente entregue. Difere do pedido quando o provider não tinha dublagem. */
+  idioma?: 'sub' | 'dub' | null;
 }

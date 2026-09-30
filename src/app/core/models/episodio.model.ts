@@ -10,4 +10,6 @@ export interface Episodio {
   capaUrl?: string;
   dataLancamento: string;
   idioma: Idioma;
+  /** O provider externo tem audio dublado para este episodio. */
+  dublado?: boolean;
 }

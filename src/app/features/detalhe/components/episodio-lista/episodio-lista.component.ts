@@ -23,7 +23,7 @@ export class EpisodioListaComponent implements OnChanges {
   abertas: number[] = [];
 
   /**
-   * Temporadas em ordem crescente, com os episodios de cada uma em ordem decrescente
+   * Temporadas da mais atual para a mais antiga, com os episodios de cada uma em ordem decrescente
    * (do mais novo para o mais antigo). Calculado uma vez por troca de anime para nao
    * recriar listas a cada ciclo de deteccao de mudancas.
    */
@@ -34,9 +34,9 @@ export class EpisodioListaComponent implements OnChanges {
       return;
     }
     const ordenadas = [...this.temporadas]
-      .sort((a, b) => a.numero - b.numero)
+      .sort((a, b) => b.numero - a.numero)
       .map((temporada) => ({ ...temporada, episodios: [...temporada.episodios].reverse() }));
-    const maisRecente = ordenadas[ordenadas.length - 1];
+    const maisRecente = ordenadas[0];
     this.abertas = [maisRecente.numero];
     this.temporadasOrdenadas = ordenadas;
   }
