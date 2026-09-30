@@ -1,0 +1,3 @@
+# SPA fallback: o Angular usa rotas por path, entao /anime/123 precisa devolver index.html
+# em vez de 404 da Cloudflare.
+/*  /index.html  200
