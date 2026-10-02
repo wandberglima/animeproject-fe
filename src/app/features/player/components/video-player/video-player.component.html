@@ -6,6 +6,23 @@
       [attr.src]="streamHls ? null : streamUrl"
       controls></video>
   </div>
+
+  @if (temLegendas) {
+    <div class="video-player--legendas">
+      <label for="legenda-select">Legenda</label>
+      <select
+        id="legenda-select"
+        [value]="indiceSelecionado"
+        (change)="alterarLegenda(+$any($event.target).value)">
+        <option [value]="-1">Desligada</option>
+        @for (legenda of legendasDisponiveis; track track($index)) {
+          <option [value]="legendasOrdenadas.indexOf(legenda)">
+            {{ rotulo(legenda) }}
+          </option>
+        }
+      </select>
+    </div>
+  }
 } @else if (videoUrl) {
   @if (ehIframe) {
     <div class="video-player">

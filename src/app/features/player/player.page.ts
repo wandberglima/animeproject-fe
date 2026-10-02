@@ -5,7 +5,7 @@ import { first } from 'rxjs';
 import { Anime } from '../../core/models/anime.model';
 import { Idioma } from '../../core/models/enums';
 import { Episodio } from '../../core/models/episodio.model';
-import { StreamInfo } from '../../core/models/stream.model';
+import { LegendaStream, StreamInfo } from '../../core/models/stream.model';
 import { AnimeService } from '../../core/services/anime.service';
 import { EmptyStateComponent } from '../../shared/ui/empty-state/empty-state.component';
 import { LoadingSpinnerComponent } from '../../shared/ui/loading-spinner/loading-spinner.component';
@@ -160,6 +160,18 @@ export class PlayerPageComponent implements OnInit, OnDestroy {
 
   get ehHls(): boolean {
     return this.stream?.tipo === 'HLS';
+  }
+
+  /**
+   * As faixas que o player deve oferecer. O StreamInfo ja trazia `legendas`, mas nada as levava
+   * ate o componente, entao a legenda nunca aparecia mesmo quando o provider mandava pt-BR.
+   * O prefixo do proxy e resolvido aqui porque o hls.js busca a URL diretamente.
+   */
+  get legendasDoStream(): LegendaStream[] {
+    return (this.stream?.legendas ?? []).map((legenda) => ({
+      ...legenda,
+      url: this.absoluto(legenda.url),
+    }));
   }
 
   get usandoStream(): boolean {

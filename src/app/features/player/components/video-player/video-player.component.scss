@@ -16,6 +16,29 @@
   }
 }
 
+.video-player--legendas {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+
+  label {
+    font-weight: 600;
+  }
+
+  select {
+    flex: 1;
+    max-width: 18rem;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid var(--borda);
+    border-radius: var(--borda-raio);
+    background: var(--superficie-2);
+    color: var(--texto);
+  }
+}
+
 .video-player--vazio {
   display: flex;
   flex-direction: column;

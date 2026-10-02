@@ -17,7 +17,7 @@ export enum Idioma {
 
 export const IDIOMA_LABEL: Record<Idioma, string> = {
   [Idioma.LEGENDADO]: 'Legendado',
-  [Idioma.DUBLADO]: 'Dublado',
+  [Idioma.DUBLADO]: 'Dublado (pt-BR)',
 };
 
 /** Siglas de formato do AniList traduzidas para o catalogo. */

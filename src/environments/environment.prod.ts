@@ -6,10 +6,14 @@
  *     index.html, por exemplo). Assim da para apontar a aplicacao para outro ambiente sem rebuild.
  *  2. O valor padrao abaixo.
  *
- * IMPORTANTE: o endereco padrao ainda responde 404. O backend e um Spring Boot empacotado em JAR,
- * que nao roda como funcao serverless da Vercel, entao o deploy precisa acontecer em um host que
- * execute processo de longa duracao (Render, Railway, Fly.io, uma VM). Enquanto nao for esse o
- * caso, aponte o valor padrao para o host que realmente responde, ou defina o global acima.
+ * IMPORTANTE: este endereco e um tunel rapido do Cloudflare (trycloudflare.com), que muda a cada
+ * reinicio. Ele existe porque a API roda na sua maquina: um site em HTTPS nao consegue chamar
+ * http://localhost. Para um endereco estavel, crie um tunel nomeado no painel da Cloudflare
+ * (Zero Trust > Networks > Tunnels) e troque o valor abaixo pelo hostname dele.
+ *
+ * Depois que o projeto existir na Cloudflare Pages, acrescente o dominio real
+ * (https://<projeto>.pages.dev) em CORS_ORIGENS, no arquivo api-env.ps1, e reinicie a API. Sem
+ * essa entrada o navegador bloqueia a resposta, mesmo com a API no ar.
  *
  * A barra final e removida de proposito: os servicos concatenam `${apiUrl}/animes` e uma barra
  * duplicada geraria caminho com //.
@@ -29,5 +33,5 @@ declare global {
 
 export const environment = {
   production: true,
-  apiUrl: resolverPadrao('https://animeproject-api.vercel.app'),
+  apiUrl: resolverPadrao('https://nights-thy-front-pty.trycloudflare.com'),
 };

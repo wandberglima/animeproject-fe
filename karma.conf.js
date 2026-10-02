@@ -26,6 +26,16 @@ module.exports = function (config) {
     },
     reporters: ['progress', 'kjhtml'],
     browsers: ['Chrome'],
+    customLaunchers: {
+      // Sem --no-sandbox o Chromium nao sobe em container, em sandbox de servico e em
+      // maquina de build semusuario dedicado, que e o caso do build da Cloudflare. Como os
+      // testes so rodam contra o navegador de teste, desligar o sandbox aqui nao enfraquece
+      // nada do que a aplicacao faz.
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage'],
+      },
+    },
     restartOnFileChange: true,
   });
 };

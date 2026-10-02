@@ -12,7 +12,8 @@
       <app-video-player
         [videoUrl]="usaStream || streamCarregando ? '' : (episodio?.videoUrl ?? '')"
         [streamUrl]="usaStream ? urlDoVideo : ''"
-        [streamHls]="ehHls" />
+        [streamHls]="ehHls"
+        [legendas]="legendasDoStream" />
 
       <div class="player__info">
         <h1 class="player__titulo">{{ anime.titulo }}</h1>
