@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, View
 import Hls from 'hls.js';
 
 import { LegendaStream } from '../../../../core/models/stream.model';
-import { codigoIdioma, pesoIdioma } from '../../../../shared/utils/idioma-legenda';
+import { codigoIdioma, pesoIdioma, rotuloIdioma } from '../../../../shared/utils/idioma-legenda';
 import { FalasLegenda, lerVtt } from '../../../../shared/utils/legenda-vtt';
 import { SafeUrlPipe } from '../../../../shared/pipes/safe-url.pipe';
 
@@ -43,6 +43,8 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy, AfterViewInit
   private faixas: (TextTrack | undefined)[] = [];
   private indiceAtiva = -1;
   private legendasCarregadasPara = '';
+  /** Erros fatais seguidos do hls.js; acima do limite o player desiste em vez de insistir. */
+  private errosFataisSeguidos = 0;
   /** Elemento onde as faixas foram criadas, para nao repetir a carga no mesmo <video>. */
   private elementoDasLegendas?: HTMLVideoElement;
 
@@ -97,7 +99,23 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy, AfterViewInit
   }
 
   rotulo(legenda: LegendaStream): string {
-    return legenda.rotulo || legenda.idioma;
+    const original = legenda.rotulo || legenda.idioma;
+    // A deteccao junta idioma e rotulo porque o provider as vezes so escreve o pais no rotulo
+    // ("portuguese" no idioma, "Portuguese (Brazil)" no rotulo) e as vezes so no rotulo.
+    const deteccao = `${legenda.idioma} ${original}`;
+    const amigavel = rotuloIdioma(deteccao);
+    // Fora do portugues `rotuloIdioma` devolve a propria entrada, ou seja, a deteccao: nesse caso o
+    // rotulo do provider e devolvido intacto, sem repetir o idioma duas vezes.
+    if (amigavel === deteccao) {
+      return original;
+    }
+    // Duas faixas de portugues podem cair no mesmo nome ("Portuguese" e "Portuguese 2"). Quando
+    // isso acontece o rotulo do provider volta como complemento, senao o seletor mostraria duas
+    // opcoes identicas e nao daria para escolher entre elas.
+    const repetidas = this.legendasOrdenadas.filter(
+      (outra) => rotuloIdioma(`${outra.idioma} ${outra.rotulo || outra.idioma}`) === amigavel,
+    );
+    return repetidas.length > 1 ? `${amigavel} — ${original}` : amigavel;
   }
 
   track(indice: number): number {
@@ -159,11 +177,47 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy, AfterViewInit
 
   private iniciarHls(video: HTMLVideoElement): void {
     if (Hls.isSupported()) {
-      this.hls = new Hls({ enableWorker: true, backBufferLength: 90 });
+      this.hls = new Hls({
+        enableWorker: true,
+        backBufferLength: 90,
+        // Por padrao o hls.js repete uma carga que falhou indefinidamente. Com o CDN devolvendo
+        // 502 de vez em quando, isso virou mais de mil requisicoes em 20 segundos: nao era o
+        // player travado, era ele martelando o proxy ate derrubar a API. Aqui a retentativa e
+        // curta e limitada.
+        manifestLoadPolicy: {
+          default: {
+            maxTimeToFirstByteMs: 10000,
+            maxLoadTimeMs: 20000,
+            timeoutRetry: { maxNumRetry: 2, retryDelayMs: 500, maxRetryDelayMs: 2000 },
+            errorRetry: { maxNumRetry: 2, retryDelayMs: 500, maxRetryDelayMs: 2000 },
+          },
+        },
+        fragLoadPolicy: {
+          default: {
+            maxTimeToFirstByteMs: 10000,
+            maxLoadTimeMs: 30000,
+            timeoutRetry: { maxNumRetry: 3, retryDelayMs: 500, maxRetryDelayMs: 2000 },
+            errorRetry: { maxNumRetry: 3, retryDelayMs: 500, maxRetryDelayMs: 2000 },
+          },
+        },
+      });
       this.hls.loadSource(this.streamUrl);
       this.hls.attachMedia(video);
       this.hls.on(Hls.Events.ERROR, (_evento, dados) => {
         if (dados.fatal) {
+          // O hls.js engole o erro e o player simplesmente para, sem dizer nada no console. Sem
+          // esta linha "o episodio parou de reproduzir" nao tem causa nenhuma: so se sabe que algo
+          // deu errado, nao o que.
+          console.warn('hls.js: erro fatal', dados.type, dados.details);
+          // `startLoad()` e `recoverMediaError()` sao retentativas infinitas. Quando o host de
+          // video esta fora do ar, o hls.js refaz a busca indefinidamente: foram mais de mil
+          // requisicoes em poucos segundos, o que derruba o proxy e transforma um problema de
+          // CDN em "a API inteira parou". Tres tentativas e desistimos.
+          if (this.errosFataisSeguidos >= 3) {
+            this.pararHls();
+            return;
+          }
+          this.errosFataisSeguidos++;
           switch (dados.type) {
             case Hls.ErrorTypes.NETWORK_ERROR:
               this.hls?.startLoad();
@@ -273,6 +327,7 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy, AfterViewInit
 
   private pararHls(): void {
     this.hlsPendente = false;
+    this.errosFataisSeguidos = 0;
     if (this.hls) {
       this.hls.destroy();
       this.hls = undefined;

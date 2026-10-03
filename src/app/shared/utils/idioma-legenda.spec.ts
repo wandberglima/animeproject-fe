@@ -1,4 +1,4 @@
-import { codigoIdioma, ehPortuguesBrasileiro, pesoIdioma } from './idioma-legenda';
+import { codigoIdioma, ehPortuguesBrasileiro, pesoIdioma, rotuloIdioma } from './idioma-legenda';
 
 describe('idioma-legenda', () => {
   describe('ehPortuguesBrasileiro', () => {
@@ -69,6 +69,39 @@ describe('idioma-legenda', () => {
       // O HTML so aceita BCP-47: um rotulo livre faria o navegador recusar a faixa inteira.
       expect(codigoIdioma('')).toBe('und');
       expect(codigoIdioma('Klingon')).toBe('und');
+    });
+
+    it('resolve rotulo composto, que era o que devolvia und', () => {
+      // O provider manda "spanish (- espanol)": `normalizar` junta tudo em "spanishespanol", que
+      // nao existe como chave no mapa, e a faixa ficava sem srclang. As duas faixas de espanhol de
+      // "[Oshi no Ko] 2nd Season" sao exatamente desse formato.
+      expect(codigoIdioma('spanish (- espanol)')).toBe('es');
+      expect(codigoIdioma('spanish (- espanol (espana))')).toBe('es');
+      expect(codigoIdioma('spanish (- espanol (latin american))')).toBe('es');
+      expect(codigoIdioma('english (ai)')).toBe('en');
+      expect(codigoIdioma('portuguese (- portugues(brasil))')).toBe('pt-BR');
+      expect(codigoIdioma('arabic')).toBe('ar');
+      expect(codigoIdioma('indonesian (- indonesian)')).toBe('id');
+    });
+  });
+
+  describe('rotuloIdioma', () => {
+    it('traduz so o portugues, que e o que o usuario procura', () => {
+      // "portuguese (- portugues)" nao declara pais, entao continua sendo portugues generico:
+      // marcar como pt-BR seria afirmar algo que o provider nao disse.
+      expect(rotuloIdioma('portuguese (- portugues)')).toBe('Português');
+      expect(rotuloIdioma('portuguese')).toBe('Português');
+      expect(rotuloIdioma('Portuguese (Brazil)')).toBe('Português (Brasil)');
+      expect(rotuloIdioma('portuguese (- portugues(brasil))')).toBe('Português (Brasil)');
+    });
+
+    it('preserva o rotulo do provider nas outras linguas', () => {
+      // As duas faixas de espanhol de "[Oshi no Ko] 2nd Season" differem so pelo qualificador
+      // ("latin american" e "espana"): traduzir as duas para "Espanhol" as deixaria indistinguiveis
+      // no seletor.
+      expect(rotuloIdioma('spanish (- espanol (latin american))')).toBe('spanish (- espanol (latin american))');
+      expect(rotuloIdioma('english (ai)')).toBe('english (ai)');
+      expect(rotuloIdioma('Klingon')).toBe('Klingon');
     });
   });
 });

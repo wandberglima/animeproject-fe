@@ -159,5 +159,39 @@ export function codigoIdioma(valor: string): string {
   }
   // O provider numera faixas repetidas ("spanish 2"); o numero nao faz parte do nome.
   const nome = bruto.replace(/[0-9]+$/, '');
-  return ISO_POR_NOME[nome] ?? 'und';
+  if (ISO_POR_NOME[nome]) {
+    return ISO_POR_NOME[nome];
+  }
+  // Rotulo composto ("spanish (- espanol)", "english (ai)"): as chaves do mapa sao palavras
+  // soltas, mas `normalizar` juntou tudo sem separador ("spanishespanol"), entao a busca pela
+  // string inteira nunca casava e a faixa caia em "und". Aqui cada palavra do rotulo original e
+  // testada na ordem em que aparece, e a primeira que resolver define o idioma.
+  for (const parte of palavras(valor)) {
+    if (ISO_POR_NOME[parte]) {
+      return ISO_POR_NOME[parte];
+    }
+  }
+  return 'und';
+}
+
+/** Como o provider nomeia as faixas de portugues. */
+const ROTULO_PT_BR = 'Português (Brasil)';
+const ROTULO_PT = 'Português';
+
+/**
+ * Rotulo de exibicao no seletor de legenda.
+ *
+ * As outras linguas mantem o rotulo do provider: ele carrega o qualificador que a traducao nao
+ * tem como adivinhar, como as duas faixas de espanhol de "spanish (- espanol (latin american))" e
+ * "spanish (- espanol (espana))", que virariam "Espanhol" uma e outra se fossem traduzidas. O
+ * portugues nao tem essa ambiguidade, e o usuario precisa conseguir achar a faixa pt-BR pelo nome.
+ */
+export function rotuloIdioma(valor: string): string {
+  if (ehPortuguesBrasileiro(valor)) {
+    return ROTULO_PT_BR;
+  }
+  if (pesoIdioma(valor) === 2) {
+    return ROTULO_PT;
+  }
+  return valor;
 }

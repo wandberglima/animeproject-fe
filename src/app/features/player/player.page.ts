@@ -39,6 +39,17 @@ export class PlayerPageComponent implements OnInit, OnDestroy {
   idioma: Idioma = Idioma.LEGENDADO;
   avisoIdioma?: string;
 
+  /**
+   * Legendas com URL ja absoluta, calculadas uma vez por stream.
+   *
+   * Este valor era um getter que devolvia um array novo a cada ciclo de deteccao. O Angular compara
+   * o binding por referencia, entao `ngOnChanges` do player disparava continuamente: o hls.js era
+   * destruido e recriado cerca de 125 vezes por segundo, o `play()` era abortado a cada vez
+   * ("interrompido por uma nova carga") e o proxy recebia milhares de pedidos, esgotando as vagas e
+   * respondendo 503. Era essa a origem de "o episodio para de reproduzir".
+   */
+  private legendasResolvidas: LegendaStream[] = [];
+
   private animeId = 0;
   private numeroAtual = 0;
   private paramsSubscription?: { unsubscribe(): void };
@@ -114,6 +125,10 @@ export class PlayerPageComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (stream) => {
           this.stream = stream;
+          this.legendasResolvidas = (stream.legendas ?? []).map((legenda) => ({
+            ...legenda,
+            url: this.absoluto(legenda.url),
+          }));
           this.streamCarregando = false;
           // O backend cai para a legenda quando o provider nao tem dublagem. A resposta diz o que
           // foi entregue, e sem esta checagem o botao "Dublado" tocava legenda sem avisar.
@@ -168,10 +183,7 @@ export class PlayerPageComponent implements OnInit, OnDestroy {
    * O prefixo do proxy e resolvido aqui porque o hls.js busca a URL diretamente.
    */
   get legendasDoStream(): LegendaStream[] {
-    return (this.stream?.legendas ?? []).map((legenda) => ({
-      ...legenda,
-      url: this.absoluto(legenda.url),
-    }));
+    return this.legendasResolvidas;
   }
 
   get usandoStream(): boolean {

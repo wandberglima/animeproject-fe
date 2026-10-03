@@ -1,0 +1,8 @@
+# Cloudflare Pages
+#
+# `wrangler pages deploy` sem argumentos usa esta pasta. O Angular 20 gera em
+# `dist/aniprojects/browser` porque `outputPath` no angular.json e `dist/aniprojects`; o
+# subdiretorio `browser` e onde ficam o index.html e os chunks, e ele que deve ser enviado.
+name = "aniprojects"
+pages_build_output_dir = "dist/aniprojects/browser"
+compatibility_date = "2026-10-01"
