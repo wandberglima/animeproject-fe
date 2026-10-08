@@ -58,3 +58,31 @@
 :host ::ng-deep .filtros app-select-genero {
   min-width: 15rem;
 }
+
+// Atalho para os titulos com legenda em portugues. Fica junto dos outros selects da linha em vez de
+// virar mais um dropdown: sao dois estados, e o usuario procura isso antes de escolher genero.
+.filtros__pt {
+  min-width: 3.2rem;
+  height: 2.5rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--borda);
+  border-radius: 0.5rem;
+  background: var(--superficie-2);
+  color: var(--texto-suave);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.filtros__pt:hover {
+  border-color: var(--primaria);
+  color: var(--texto);
+}
+
+.filtros__pt--ativo {
+  background: var(--primaria);
+  border-color: var(--primaria);
+  color: var(--texto-contraste);
+}

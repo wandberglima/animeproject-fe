@@ -79,6 +79,22 @@
     backdrop-filter: blur(4px);
   }
 
+  // Selo no canto oposto a nota: menos da metade do catalogo tem legenda em portugues, e o filtro
+  // "PT" so faz sentido se o usuario conseguir reconhecer esses titulos pela lista.
+  &__pt {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.15rem 0.45rem;
+    border-radius: 999px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+
   &__corpo {
     padding: 0.6rem 0.75rem 0.75rem;
   }

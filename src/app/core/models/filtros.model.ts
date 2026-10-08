@@ -10,6 +10,14 @@ export interface FiltrosAnime {
   ordenacao?: string;
   pagina?: number;
   tamanho?: number;
+  /**
+   * Mostra apenas titulos ja confirmados com faixa de legenda em portugues.
+   *
+   * So cerca de um quinto do catalogo tem pt nas fontes atuais, e o dado aparece quando o episodio e
+   * reproduzido. Por isso o filtro lista os titulos ja confirmados, em vez de prometer que todo
+   * titulo sem a marca esta sem legenda.
+   */
+  somentePortugues?: boolean;
 }
 
 export interface ResultadoPaginado<T> {

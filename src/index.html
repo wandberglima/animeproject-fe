@@ -10,6 +10,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!--
+    Endereco da API em producao, aplicado em runtime.
+
+    A API roda na maquina do usuario e so e alcancavel por um tunel rapido do Cloudflare, que gera
+    uma URL nova a cada reinicio. Sem este arquivo, trocar a URL exigiria rebuild e republicacao do
+    site inteiro. O script e um arquivo comum (e nao um fetch) de proposito: ele roda de forma
+    bloqueante no head, antes dos bundles diferidos do Angular, que e quando o environment.prod.ts
+    le o valor. O atalho que sobe a API reescreve este arquivo e republica as paginas.
+  -->
+  <script src="/api-config.js"></script>
 </head>
 <body>
   <app-root></app-root>

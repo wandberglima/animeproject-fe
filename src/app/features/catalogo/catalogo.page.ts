@@ -75,6 +75,7 @@ export class CatalogoPageComponent implements OnInit, OnDestroy {
     if (this.filtros.idioma) partes.push(IDIOMA_LABEL[this.filtros.idioma]);
     if (this.filtros.status) partes.push(STATUS_ANIME_LABEL[this.filtros.status]);
     if (this.filtros.ano) partes.push(`ano ${this.filtros.ano}`);
+    if (this.filtros.somentePortugues) partes.push('com legenda em português');
     return partes.length ? `Filtrando por: ${partes.join(' · ')}` : 'Todos os animes do catálogo';
   }
 
@@ -102,6 +103,7 @@ export class CatalogoPageComponent implements OnInit, OnDestroy {
       ordenacao: params['ordenacao'] ?? ORDENACAO_PADRAO,
       pagina: params['pagina'] ? Number(params['pagina']) : 1,
       tamanho: params['tamanho'] ? Number(params['tamanho']) : TAMANHO_PADRAO,
+      somentePortugues: params['pt'] === 'true' || undefined,
     };
   }
 
@@ -177,6 +179,9 @@ export class CatalogoPageComponent implements OnInit, OnDestroy {
     if (filtros.ordenacao && filtros.ordenacao !== ORDENACAO_PADRAO) params['ordenacao'] = filtros.ordenacao;
     if (filtros.pagina && filtros.pagina > 1) params['pagina'] = String(filtros.pagina);
     if (filtros.tamanho && filtros.tamanho !== TAMANHO_PADRAO) params['tamanho'] = String(filtros.tamanho);
+    // "pt" na URL em vez do nome da API: e o que o usuario digita para compartilhar o link, e o
+    // filtro precisa sobreviver a recarregar a pagina, entao vira query param em vez de estado local.
+    if (filtros.somentePortugues) params['pt'] = 'true';
     this.router.navigate(['/animes'], { queryParams: params });
   }
 }

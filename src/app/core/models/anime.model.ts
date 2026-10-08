@@ -24,6 +24,14 @@ export interface Anime {
   idioma: Idioma;
   /** TV, MOVIE, OVA, ONA, SPECIAL... do AniList. */
   formato?: string;
+  /**
+   * Algum episodio deste titulo ja confirmou faixa de legenda em portugues.
+   *
+   * A API so sabe isso depois que o episodio e reproduzido, porque e o scraper que devolve as faixas
+   * no momento do play. Enquanto o titulo nunca foi aberto o campo vem falso, e nao "sem legenda":
+   * quem oferece o filtro "com portugues" usa esses titulos ja confirmados.
+   */
+  temLegendaPortugues?: boolean;
   temporadas: Temporada[];
 }
 

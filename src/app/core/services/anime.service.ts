@@ -38,6 +38,7 @@ export class AnimeService {
     if (filtros.ordenacao) params = params.set('ordenacao', filtros.ordenacao);
     if (filtros.pagina !== undefined) params = params.set('pagina', String(filtros.pagina));
     if (filtros.tamanho !== undefined) params = params.set('tamanho', String(filtros.tamanho));
+    if (filtros.somentePortugues) params = params.set('somentePortugues', 'true');
     return this.http.get<ResultadoPaginado<Anime>>(`${environment.apiUrl}/animes`, { params });
   }
 

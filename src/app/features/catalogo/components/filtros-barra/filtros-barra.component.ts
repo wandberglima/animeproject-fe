@@ -56,6 +56,8 @@ export class FiltrosBarraComponent implements OnChanges {
   statusSelecionado: string | null = null;
   idiomaSelecionado: string | null = null;
   anoSelecionado: number | null = null;
+  /** Restringe a lista aos titulos ja confirmados com faixa de legenda em portugues. */
+  somentePortugues = false;
   ordenacaoSelecionada: string = ORDENACAO_PADRAO;
 
   get temFiltro(): boolean {
@@ -67,6 +69,7 @@ export class FiltrosBarraComponent implements OnChanges {
       f.idioma ||
       f.status ||
       f.ano ||
+      f.somentePortugues ||
       (f.ordenacao && f.ordenacao !== ORDENACAO_PADRAO)
     );
   }
@@ -78,6 +81,7 @@ export class FiltrosBarraComponent implements OnChanges {
     this.statusSelecionado = this.filtros.status ?? null;
     this.idiomaSelecionado = this.filtros.idioma ?? null;
     this.anoSelecionado = this.filtros.ano ?? null;
+    this.somentePortugues = !!this.filtros.somentePortugues;
     this.ordenacaoSelecionada = this.filtros.ordenacao ?? ORDENACAO_PADRAO;
   }
 
@@ -111,6 +115,11 @@ export class FiltrosBarraComponent implements OnChanges {
     this.alterar.emit({ ano: valor ?? undefined });
   }
 
+  aoAlternarPortugues(): void {
+    this.somentePortugues = !this.somentePortugues;
+    this.alterar.emit({ somentePortugues: this.somentePortugues || undefined });
+  }
+
   aoSelecionarOrdenacao(valor: string | null): void {
     this.ordenacaoSelecionada = valor || ORDENACAO_PADRAO;
     this.alterar.emit({ ordenacao: this.ordenacaoSelecionada });
@@ -123,6 +132,7 @@ export class FiltrosBarraComponent implements OnChanges {
     this.statusSelecionado = null;
     this.idiomaSelecionado = null;
     this.anoSelecionado = null;
+    this.somentePortugues = false;
     this.ordenacaoSelecionada = ORDENACAO_PADRAO;
     this.limpar.emit();
   }

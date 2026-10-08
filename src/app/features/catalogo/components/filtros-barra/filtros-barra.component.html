@@ -38,6 +38,16 @@
       appendTo="body"
       [(ngModel)]="anoSelecionado"
       (ngModelChange)="aoSelecionarAno($event)" />
+
+    <button
+      type="button"
+      class="filtros__pt"
+      [class.filtros__pt--ativo]="somentePortugues"
+      [attr.aria-pressed]="somentePortugues"
+      title="Mostrar apenas os títulos que já têm faixa de legenda em português"
+      (click)="aoAlternarPortugues()">
+      PT
+    </button>
   </div>
 
   <div class="filtros__linha filtros__linha--extra">
