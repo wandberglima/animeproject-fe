@@ -37,6 +37,7 @@ $temp = Join-Path $env:TEMP "opencode"
 
 $arquivoEnv = Join-Path $temp "api-env.ps1"
 $scriptApi = Join-Path $temp "start-api.ps1"
+$scriptScraper = Join-Path $PSScriptRoot "subir-scraper.ps1"
 $logTunel = Join-Path $temp "cloudflared.log"
 $arquivoUrl = Join-Path $temp "tunnel-url.txt"
 $logApi = Join-Path $temp "api.log"
@@ -64,6 +65,17 @@ function ApiNoAr() {
         $r = Invoke-WebRequest -Uri "http://localhost:8080/api/home" -TimeoutSec 10 -UseBasicParsing
         return $r.StatusCode -eq 200
     } catch { return $false }
+}
+
+# ─── 0. Scraper ───────────────────────────────────────────────────────────────
+
+# O agregador precisa estar no ar ANTES da API: a varredura de cobertura usa ele para decidir
+# quais titulos existem, e sem ele a cobertura ou e ignorada (endurecida) ou esvazia o catalogo.
+if (Test-Path $scriptScraper) {
+    Say "garantindo o scraper (:3001)..."
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $scriptScraper
+} else {
+    Say "AVISO: subir-scraper.ps1 nao esta em $scriptScraper; a cobertura depende do :3001 estar no ar"
 }
 
 # ─── 1. API ───────────────────────────────────────────────────────────────────
